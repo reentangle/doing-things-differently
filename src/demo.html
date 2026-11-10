@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>where does your work sit? — demo</title>
+<style>
+* { box-sizing:border-box; }
+[hidden] { display:none!important; }
+body { margin:32px auto; padding:0 20px; max-width:800px; color:#000; background:#F4EFE8; font:16px Arial,sans-serif; }
+h1 { margin:0 0 14px; font-size:24px; }
+p { line-height:1.5; }
+.intro { margin:0 0 36px; max-width:640px; }
+button { font:inherit; color:inherit; border-radius:0; cursor:pointer; }
+button:focus-visible, #demo-graph:focus-visible { outline:2px solid #000; outline-offset:4px; }
+.required { color:#b00020; }
+.info { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; margin:0 0 0 5px; padding:0; vertical-align:middle; font-size:12px; background:transparent; border:1px solid #777; border-radius:50%; }
+.axis-question { font-size:14px; font-weight:normal; margin:0 0 20px 144px; }
+.plot-row { display:flex; }
+.y-labels { position:relative; width:144px; flex-shrink:0; font-size:13px; }
+.y-labels span { position:absolute; right:12px; top:var(--pos); transform:translateY(-50%); white-space:nowrap; }
+.y-labels span:first-child { transform:none; }
+.y-labels span:last-child { transform:translateY(-100%); }
+#demo-graph { position:relative; flex:1; min-width:0; height:clamp(320px,48vh,420px); border-left:1px solid #000; border-bottom:1px solid #000; cursor:crosshair; touch-action:manipulation; }
+.grid, .guide { position:absolute; pointer-events:none; }
+.grid.horizontal { left:0; right:0; border-top:1px dotted rgba(0,0,0,.2); }
+.grid.vertical { top:0; bottom:0; border-left:1px dotted rgba(0,0,0,.2); }
+.guide.horizontal { left:0; border-top:1px dashed rgba(0,0,0,.45); }
+.guide.vertical { bottom:0; border-left:1px dashed rgba(0,0,0,.45); }
+#demo-marker { position:absolute; width:13px; height:13px; transform:translate(-50%,-50%); pointer-events:none; }
+#demo-marker::before, #demo-marker::after { content:""; position:absolute; background:#000; }
+#demo-marker::before { width:13px; height:3px; left:0; top:5px; }
+#demo-marker::after { width:3px; height:13px; left:5px; top:0; }
+.x-labels { display:flex; justify-content:space-between; gap:8px; margin:12px 0 0 144px; font-size:13px; }
+.axis-label { border:0; background:transparent; padding:4px 0; font:inherit; cursor:help; text-underline-offset:4px; }
+.nearest { font-weight:bold; text-decoration:underline; text-underline-offset:4px; }
+.x-question { margin:22px 0 0 144px; text-align:center; }
+.actions { margin-top:36px; display:flex; align-items:center; justify-content:flex-end; gap:16px; }
+#demo-echo { font-size:13px; text-align:right; }
+@media(max-width:600px) { .actions { flex-wrap:wrap; } #demo-echo { flex-basis:100%; } }
+#demo-continue { min-width:160px; min-height:48px; padding:12px 28px; border:1px solid #000; background:#000; color:#fff; }
+#demo-continue:hover { background:#333; }
+#demo-confirmation { font-size:13px; margin:20px 0; }
+.validation { position:absolute; left:50%; bottom:0; width:1px; height:1px; border:0; padding:0; opacity:0; pointer-events:none; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+#demo-help { position:fixed; z-index:10; width:280px; max-width:calc(100vw - 24px); border:1px solid #000; padding:12px; background:#F4EFE8; font:13px/1.5 Arial,sans-serif; }
+#demo-help p { margin:0 22px 0 0; }
+#help-close { position:absolute; top:4px; right:5px; padding:2px 5px; border:0; background:transparent; font-size:18px; line-height:1; }
+@media(max-width:600px) {
+ body { margin:20px auto; padding:0 12px; }
+ h1 { font-size:22px; }
+ .intro { font-size:14px; margin-bottom:28px; }
+ .y-labels { width:44px; font-size:11px; }
+ .y-labels span { right:10px; writing-mode:vertical-rl; text-orientation:mixed; transform:translateY(-50%) rotate(180deg); }
+ .y-labels span:first-child, .y-labels span:last-child { transform:translateY(-50%) rotate(180deg); }
+ .axis-question, .x-labels { margin-left:44px; }
+ .axis-question { font-size:13px; }
+ .y-question { margin-bottom:42px; }
+ .x-labels { font-size:11px; }
+ #demo-graph { height:clamp(320px,45svh,380px); }
+ #demo-continue { width:100%; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>where does your work sit? <span class="required" aria-hidden="true">*</span><span class="sr-only"> (required)</span></h1>
+<p class="intro">place yourself by the work you put most of yourself into, paid or unpaid. <button type="button" class="info" data-help="if you're between jobs, caring, organising, making or looking for work can count too." aria-label="what can count as work?" aria-controls="demo-help" aria-expanded="false">i</button></p>
+<form id="demo-form" novalidate>
+<p class="axis-question y-question" id="demo-y-question">how well does this work support your livelihood? <button type="button" class="info" data-help="income and benefits from this work alone, including housing or food. leave out other income, savings or support. unpaid work may give little or nothing." aria-label="what to include in livelihood support" aria-controls="demo-help" aria-expanded="false">i</button></p>
+<div class="plot-row">
+<div class="y-labels" aria-label="livelihood labels, from surplus to precarious"><span style="--pos:0%">surplus</span><span style="--pos:33.333%">secure</span><span style="--pos:66.667%">getting by</span><span style="--pos:100%">precarious</span></div>
+<div id="demo-graph" role="group" aria-label="place your work" aria-describedby="demo-y-question demo-x-question keyboard-help demo-selection" tabindex="0">
+<span class="grid horizontal" style="top:33.333%" aria-hidden="true"></span><span class="grid horizontal" style="top:66.667%" aria-hidden="true"></span><span class="grid vertical" style="left:33.333%" aria-hidden="true"></span><span class="grid vertical" style="left:66.667%" aria-hidden="true"></span>
+<span id="guide-horizontal" class="guide horizontal" hidden aria-hidden="true"></span><span id="guide-vertical" class="guide vertical" hidden aria-hidden="true"></span><span id="demo-marker" hidden aria-hidden="true"></span>
+<input id="demo-position" class="validation" type="text" required tabindex="-1" autocomplete="off" aria-label="choose a position on the map">
+</div>
+</div>
+<div class="x-labels"><button type="button" class="axis-label" data-help="works within existing systems as they are" aria-label="as things are — definition" aria-controls="demo-help" aria-expanded="false">as things are</button><button type="button" class="axis-label" data-help="changes how existing systems work while keeping their underlying assumptions" aria-label="reforming — definition" aria-controls="demo-help" aria-expanded="false">reforming</button><button type="button" class="axis-label" data-help="works from fundamentally different assumptions and logics" aria-label="transforming — definition" aria-controls="demo-help" aria-expanded="false">transforming</button></div>
+<p class="axis-question x-question" id="demo-x-question">how far does your work depart from existing systems? <button type="button" class="info" data-help="how far it departs from the assumptions and logics of the systems around you." aria-label="what departure from existing systems means" aria-controls="demo-help" aria-expanded="false">i</button></p>
+<p id="keyboard-help" class="sr-only">use the arrow keys to place or move your cross. the first arrow key starts at the centre. each press moves one point; hold shift to move ten. click or tap anywhere to move it.</p>
+<p id="demo-selection" class="sr-only" aria-live="polite">no position selected.</p>
+<div class="actions"><span id="demo-echo" hidden aria-hidden="true"></span><button id="demo-continue" type="submit">continue</button></div>
+<p id="demo-confirmation" role="status" hidden>demo only — your placement is shown above. nothing has been saved or submitted. you can still move your cross.</p>
+</form>
+</main>
+<div id="demo-help" role="dialog" aria-label="map help" hidden><button type="button" id="help-close" aria-label="close help">×</button><p id="help-text"></p></div>
+<script>
+(() => {
+ const graph=document.getElementById('demo-graph'),marker=document.getElementById('demo-marker'),position=document.getElementById('demo-position'),selection=document.getElementById('demo-selection');
+ const horizontal=document.getElementById('guide-horizontal'),vertical=document.getElementById('guide-vertical'),confirmation=document.getElementById('demo-confirmation');
+ const xLabels=Array.from(document.querySelectorAll('.x-labels .axis-label')),yLabels=Array.from(document.querySelectorAll('.y-labels span'));
+ let point=null;
+ position.setCustomValidity('please choose a position on the map.');
+ function place(x,y) {
+  point={x:Math.round(Math.max(0,Math.min(100,x))*100)/100,y:Math.round(Math.max(0,Math.min(100,y))*100)/100};
+  position.value=point.x+','+point.y;position.setCustomValidity('');
+  marker.hidden=false;marker.style.left=point.x+'%';marker.style.top=(100-point.y)+'%';
+  horizontal.style.top=(100-point.y)+'%';horizontal.style.width=point.x+'%';vertical.style.left=point.x+'%';vertical.style.top=(100-point.y)+'%';horizontal.hidden=vertical.hidden=false;
+  const nearest=(values,value)=>values.reduce((best,current,index)=>Math.abs(current-value)<Math.abs(values[best]-value)?index:best,0);
+  const xi=nearest([0,50,100],point.x),yi=nearest([100,66.667,33.333,0],point.y);
+  xLabels.forEach((label,i)=>label.classList.toggle('nearest',i===xi));yLabels.forEach((label,i)=>label.classList.toggle('nearest',i===yi));
+  selection.textContent='towards '+xLabels[xi].textContent+', near '+yLabels[yi].textContent+'.';
+  const echo=document.getElementById('demo-echo');echo.textContent=xLabels[xi].textContent+', '+yLabels[yi].textContent;echo.hidden=false;
+ }
+ graph.addEventListener('click',event=>{const bounds=graph.getBoundingClientRect();place((event.clientX-bounds.left-graph.clientLeft)/graph.clientWidth*100,100-(event.clientY-bounds.top-graph.clientTop)/graph.clientHeight*100);});
+ graph.addEventListener('keydown',event=>{
+  if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;
+  event.preventDefault();if(!point){place(50,50);return;}
+  const step=event.shiftKey?10:1;
+  place(point.x+(event.key==='ArrowRight'?step:event.key==='ArrowLeft'?-step:0),point.y+(event.key==='ArrowUp'?step:event.key==='ArrowDown'?-step:0));
+ });
+ document.getElementById('demo-form').addEventListener('submit',event=>{event.preventDefault();hideHelp();if(!point){graph.focus();position.reportValidity();return;}confirmation.hidden=false;});
+ const help=document.getElementById('demo-help'),helpText=document.getElementById('help-text');let active=null,pinned=false,suppressFocus=false;
+ function hideHelp(restore=false){const trigger=active;if(trigger){trigger.setAttribute('aria-expanded','false');trigger.removeAttribute('aria-describedby');}help.hidden=true;active=null;pinned=false;if(restore&&trigger){suppressFocus=true;trigger.focus();suppressFocus=false;}}
+ function showHelp(trigger,pin=false){if(active&&active!==trigger)active.setAttribute('aria-expanded','false');active=trigger;pinned=pin;helpText.textContent=trigger.dataset.help;help.setAttribute('aria-label',trigger.getAttribute('aria-label'));trigger.setAttribute('aria-expanded','true');trigger.setAttribute('aria-describedby','help-text');help.hidden=false;const bounds=trigger.getBoundingClientRect(),box=help.getBoundingClientRect();help.style.left=Math.max(12,Math.min(bounds.left,innerWidth-box.width-12))+'px';help.style.top=Math.max(12,bounds.bottom+10+box.height<innerHeight-12?bounds.bottom+10:bounds.top-box.height-10)+'px';}
+ document.querySelectorAll('[data-help]').forEach(trigger=>{
+  trigger.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!pinned)showHelp(trigger);});
+  trigger.addEventListener('pointerleave',event=>{if(!pinned&&document.activeElement!==trigger&&!help.contains(event.relatedTarget))hideHelp();});
+  trigger.addEventListener('focus',()=>{if(!suppressFocus)showHelp(trigger);});
+  trigger.addEventListener('click',()=>{if(active===trigger&&pinned)hideHelp();else showHelp(trigger,true);});
+ });
+ document.getElementById('help-close').addEventListener('click',()=>hideHelp(true));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!help.hidden){event.preventDefault();hideHelp(help.contains(document.activeElement));}});
+ document.addEventListener('pointerdown',event=>{if(!help.hidden&&!help.contains(event.target)&&!event.target.closest('[data-help]'))hideHelp();});
+ document.addEventListener('focusin',event=>{if(active&&!help.contains(event.target)&&event.target!==active)hideHelp();});
+ help.addEventListener('pointerleave',event=>{if(!pinned&&document.activeElement!==active&&event.relatedTarget!==active)hideHelp();});
+ window.addEventListener('resize',()=>hideHelp());window.addEventListener('scroll',()=>hideHelp(),true);
+})();
+</script>
+</body>
+</html>

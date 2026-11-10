@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';import fs from 'node:fs/promises';import vm from 'node:vm';import {handle} from '../supabase/functions/research-admin/index.ts';
+const origin='https://reentangle.github.io',root='https://example.test/functions/v1/research-admin',token='a'.repeat(64),env={get:name=>name==='SUPABASE_URL'?'https://db.test':'server-only-key'};
+let sessionValid=false,calls=[];const mock=async(url,options)=>{const name=url.split('/').pop();calls.push(name);let data;if(name==='github_admin_session_valid')data=sessionValid;else if(name==='github_consume_research_login_attempt')data=true;else if(name==='github_admin_ready')data=true;else if(name==='github_admin_login')data=JSON.parse(options.body).p_password==='test-only-password'?token:null;else if(name==='github_get_private_responses')data=[{id:'1',questionnaire_version:'v2.4-r1',reference_code:'A1B2C3D4',job:'synthetic test'},{id:'2',questionnaire_version:'v2.3-r1',job:'earlier test'}];else if(name==='github_save_research_content')data={error:'conflict'};else if(name==='get_research_response_count')data=1;else data=[];return Response.json(data);};
+const request=(path,options={})=>new Request(root+path,{...options,headers:{origin,...options.headers}});
+let r=await handle(request('/responses?version=v2.4-r1'),env,mock);assert.equal(r.status,401);assert(!calls.includes('github_get_private_responses'));
+r=await handle(request('/responses?version=v2.4-r1',{headers:{authorization:'Bearer '+token}}),env,mock);assert.equal(r.status,401);
+r=await handle(new Request(root+'/count',{headers:{origin:'https://unrelated.test'}}),env,mock);assert.equal(r.status,403);
+r=await handle(request('/count'),env,mock);assert.equal((await r.json()).count,1);
+r=await handle(request('/responses',{method:'OPTIONS'}),env,mock);assert.equal(r.status,204);
+r=await handle(request('/login',{method:'POST',body:JSON.stringify({username:'jonas',password:'wrong'})}),env,mock);assert.equal(r.status,401);
+r=await handle(request('/login',{method:'POST',body:JSON.stringify({username:'jonas',password:'test-only-password'})}),env,mock);assert.equal(r.status,200);assert.equal((await r.json()).token,token);
+sessionValid=true;r=await handle(request('/responses?version=v2.4-r1',{headers:{authorization:'Bearer '+token}}),env,mock);assert.equal(r.status,200);assert.equal((await r.json()).length,1);
+r=await handle(request('/responses?version=v2.4-r1&reference=A1B2C3D4',{headers:{authorization:'Bearer '+token}}),env,mock);assert.equal((await r.json())[0].id,'1');
+r=await handle(request('/responses/9999999999999999999',{method:'DELETE',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:'{}'}),env,mock);assert.equal(r.status,400);
+const admin=await fs.readFile('src/admin-template.html','utf8');for(const [,script] of admin.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g))new vm.Script(script);
+const pub=await fs.readFile('src/public-template.html','utf8');assert(pub.includes('window.initializeResearchSurvey = () => {'));assert(!pub.includes("window.addEventListener('DOMContentLoaded'"));for(const [,script] of pub.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g))if(!script.includes('@@CONTENT_JSON@@'))new vm.Script(script);
+for(const file of ['assets/shared.js','assets/config.js','assets/admin-app.js','assets/public-app.js','assets/runtime.js']){const text=await fs.readFile('docs/'+file,'utf8');assert(!text.includes('reentangle240226'));assert(!text.includes('SUPABASE_SERVICE_ROLE_KEY'));assert(!text.includes('RESEARCH_READER_TOKEN'));}
+console.log('PASS: unauthenticated/expired sessions denied, origin restriction, count and preflight, login validation, version/ref filtering, mutation bounds, template syntax, no server keys in Pages assets.');

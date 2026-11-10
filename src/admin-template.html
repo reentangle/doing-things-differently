@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>responses — economics of doing things differently</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 32px auto; padding: 0 20px; max-width: 900px; color: #000; background: #fff; font: 16px Arial, sans-serif; }
+    [hidden] { display:none!important; }
+    #editor-fields fieldset { margin:0; padding:0 0 18px; border:0; }
+    #editor-fields > details { padding:16px 0; border-bottom:1px solid #ccc; }
+    #editor-fields > details > summary { cursor:pointer; font-size:15px; }
+    #editor-fields label { font-weight:bold; }
+    #editor-search { display:block; width:100%; max-width:560px; margin:8px 0 20px; padding:8px; font:inherit; border:1px solid #888; }
+    .editor-sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+    #text-editor > p { font-size:13px; line-height:1.6; max-width:700px; }
+    #editor-fields label { display:block; margin:16px 0 6px; font-size:13px; }
+    #editor-fields textarea { width:100%; min-height:44px; padding:8px; font:14px/1.5 Arial,sans-serif; resize:vertical; border:1px solid #888; }
+    #text-editor { margin:40px 0; }
+    #editor-preview { width:100%; max-width:100%; height:600px; border:1px solid #000; margin:16px 0; }
+    #text-editor button { padding:6px 12px; margin:8px 8px 8px 0; font:inherit; }
+    h1 { margin-bottom: 12px; font-size: 24px; }
+    select { max-width: 100%; font: inherit; }
+    nav, #status { font-size: 13px; }
+    nav a { margin-right: 16px; }
+    #status { min-height: 1.5em; margin: 24px 0; }
+    .y-title { margin-left: 144px; }
+    .plot-row { display: flex; }
+    .y-labels { position: relative; width: 144px; flex-shrink: 0; font-size: 13px; }
+    .y-labels span { position: absolute; right: 12px; top: var(--pos); transform: translateY(-50%); white-space: nowrap; }
+    .y-labels span:first-child { transform: none; }
+    .y-labels span:last-child { transform: translateY(-100%); }
+    #graph { position: relative; flex: 1; min-width: 0; height: clamp(280px, 45vh, 400px); border-left: 1px solid #000; border-bottom: 1px solid #000; }
+    .dot { position: absolute; width: 6px; height: 6px; background: #000; border-radius: 50%; transform: translate(-50%, -50%); }
+    .x-labels { display: flex; justify-content: space-between; gap: 8px; margin: 12px 0 0 144px; font-size: 13px; }
+    .x-title { text-align: center; margin: 18px 0 32px 144px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { text-align: left; border: 1px solid #000; padding: 8px; vertical-align: top; }
+    td:first-child { overflow-wrap: anywhere; min-width: 140px; }
+    td:nth-child(4) { min-width: 140px; }
+    @media (max-width: 480px) {
+      body { margin: 24px auto; padding: 0 16px; }
+      h1 { font-size: 22px; }
+      .y-labels { width: 44px; font-size: 11px; }
+      .y-labels span { right: 10px; writing-mode: vertical-rl; text-orientation: mixed; transform: translateY(-50%) rotate(180deg); }
+      .y-labels span:first-child, .y-labels span:last-child { transform: translateY(-50%) rotate(180deg); }
+      #graph { height: clamp(320px, 45svh, 380px); }
+      .y-title, .x-labels, .x-title { margin-left: 44px; }
+      .x-labels { font-size: 11px; }
+    }
+  
+    .research-brand { display: block; width: 260px; max-width: 80%; margin: 0 0 28px; }
+    .research-brand img { display: block; width: 100%; height: auto; }
+    .studio-footer { margin: 48px 0 24px; }
+    .studio-footer img { display: block; width: 160px; max-width: 55%; height: auto; }
+    .dot { width:13px; height:13px; background:transparent; border-radius:0; color:#000; }
+    .dot::before,.dot::after { content:""; position:absolute; background:currentColor; }
+    .dot::before { width:13px; height:3px; top:5px; left:0; }
+    .dot::after { width:3px; height:13px; top:0; left:5px; }
+</style>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"></head>
+<body>
+  <a class="research-brand" href="/" aria-label="amongstudio research home"><img src="/assets/amongstudio-research.png" alt="amongstudio research" width="4014" height="452"></a>
+  <h1>responses</h1>
+  <nav><a href="/economicsofdoingthingsdifferently">the experiment</a><form action="/economicsofdoingthingsdifferently/admin/logout" method="post" style="display:inline"><button type="submit">sign out</button></form></nav>
+  <p><label for="version">questionnaire version</label> <select id="version"><option value="v2.1">v2.1 — revised axis definitions and examples</option><option value="v2.0">v2.0 — work affordance and optional questions</option><option value="v1.0">v1.0 — original questionnaire</option><option value="unknown-legacy">unknown legacy</option></select></p>
+  <form id="reference-search"><label for="reference-search-code">find a reference code</label> <input id="reference-search-code" type="search" maxlength="8" autocomplete="off" spellcheck="false"> <button type="submit">find response</button> <button id="reference-clear" type="button">clear search</button></form>
+  <p><button id="export-csv" type="button">export displayed responses as CSV</button></p>
+  <p id="version-note" style="font-size:13px;line-height:1.5"></p>
+  <p id="action-status" role="status"></p>
+  <p id="status" role="status">Loading responses…</p>
+  <p class="y-title" id="y-title">what does this work afford you?</p>
+  <div class="plot-row">
+    <div class="y-labels" id="y-labels" aria-hidden="true"><span style="--pos:0%">substantial surplus</span><span style="--pos:33.333%">secure</span><span style="--pos:66.667%">getting by</span><span style="--pos:100%">precarious</span></div>
+    <div id="graph" role="img" aria-label="Submitted positions. All responses are also listed in the table below."></div>
+  </div>
+  <div class="x-labels" id="admin-x-labels" aria-hidden="true"><span>reproduction</span><span>reform</span><span>transformation</span></div>
+  <p class="x-title" id="admin-x-title">how fundamentally different?</p>
+  <div class="table-wrap">
+    <table>
+      <caption class="sr-only" style="text-align:left; margin-bottom:8px">Responses, newest first</caption>
+      <thead><tr><th scope="col">work or situation</th><th scope="col">difference</th><th scope="col">y placement</th><th scope="col">received</th><th scope="col">version</th><th scope="col">reference code</th><th scope="col">action</th></tr></thead>
+      <tbody id="responses"></tbody>
+    </table>
+  </div>
+  <details id="conversation-contacts">
+    <summary>conversation contacts — separate from survey responses</summary>
+    <p>People who separately opted in to a conversation. No response ID or reference code is stored with these contacts. Retained for one year.</p>
+    <button id="load-contacts" type="button">load contacts</button>
+    <p id="contacts-status" role="status"></p>
+    <div class="table-wrap"><table><thead><tr><th scope="col">contact</th><th scope="col">consent date</th><th scope="col">consent wording</th></tr></thead><tbody id="contacts-rows"></tbody></table></div>
+  </details>
+  <details id="text-editor">
+    <summary>edit website text</summary>
+    <p>choose a section or search for text. preview your changes, then publish. each publication creates a new wording version; earlier responses keep their original wording.</p>
+    <label for="editor-search">find text</label> <input id="editor-search" type="search" placeholder="search wording or field names">
+    <div id="editor-fields"></div>
+    <button id="editor-preview-button" type="button">preview changes</button><button id="editor-publish" type="button">publish text</button><button id="editor-reset" type="button">discard unsaved changes</button>
+    <p id="editor-status" role="status">Loading website text…</p>
+    <label for="editor-preview-size">preview width</label> <select id="editor-preview-size"><option value="desktop">desktop</option><option value="mobile">phone (375px)</option></select>
+    <iframe id="editor-preview" title="Preview of edited website text" sandbox="" hidden></iframe>
+  </details>
+  <script>
+    const graph = document.getElementById('graph');
+    const rows = document.getElementById('responses');
+    const status = document.getElementById('status');
+    const actionStatus = document.getElementById('action-status');
+    const versionSelect = document.getElementById('version');
+    const versionNote = document.getElementById('version-note');
+    const yTitle = document.getElementById('y-title');
+    const yLabels = document.getElementById('y-labels');
+    const workCountryNames={"AF": "Afghanistan", "AX": "Åland Islands", "AL": "Albania", "DZ": "Algeria", "AS": "American Samoa", "AD": "Andorra", "AO": "Angola", "AI": "Anguilla", "AQ": "Antarctica", "AG": "Antigua & Barbuda", "AR": "Argentina", "AM": "Armenia", "AW": "Aruba", "AU": "Australia", "AT": "Austria", "AZ": "Azerbaijan", "BS": "Bahamas", "BH": "Bahrain", "BD": "Bangladesh", "BB": "Barbados", "BY": "Belarus", "BE": "Belgium", "BZ": "Belize", "BJ": "Benin", "BM": "Bermuda", "BT": "Bhutan", "BO": "Bolivia", "BA": "Bosnia & Herzegovina", "BW": "Botswana", "BV": "Bouvet Island", "BR": "Brazil", "IO": "British Indian Ocean Territory", "VG": "British Virgin Islands", "BN": "Brunei", "BG": "Bulgaria", "BF": "Burkina Faso", "BI": "Burundi", "KH": "Cambodia", "CM": "Cameroon", "CA": "Canada", "CV": "Cape Verde", "BQ": "Caribbean Netherlands", "KY": "Cayman Islands", "CF": "Central African Republic", "TD": "Chad", "CL": "Chile", "CN": "China", "CX": "Christmas Island", "CC": "Cocos (Keeling) Islands", "CO": "Colombia", "KM": "Comoros", "CG": "Congo - Brazzaville", "CD": "Congo - Kinshasa", "CK": "Cook Islands", "CR": "Costa Rica", "CI": "Côte d’Ivoire", "HR": "Croatia", "CU": "Cuba", "CW": "Curaçao", "CY": "Cyprus", "CZ": "Czechia", "DK": "Denmark", "DJ": "Djibouti", "DM": "Dominica", "DO": "Dominican Republic", "EC": "Ecuador", "EG": "Egypt", "SV": "El Salvador", "GQ": "Equatorial Guinea", "ER": "Eritrea", "EE": "Estonia", "SZ": "Eswatini", "ET": "Ethiopia", "FK": "Falkland Islands", "FO": "Faroe Islands", "FJ": "Fiji", "FI": "Finland", "FR": "France", "GF": "French Guiana", "PF": "French Polynesia", "TF": "French Southern Territories", "GA": "Gabon", "GM": "Gambia", "GE": "Georgia", "DE": "Germany", "GH": "Ghana", "GI": "Gibraltar", "GR": "Greece", "GL": "Greenland", "GD": "Grenada", "GP": "Guadeloupe", "GU": "Guam", "GT": "Guatemala", "GG": "Guernsey", "GN": "Guinea", "GW": "Guinea-Bissau", "GY": "Guyana", "HT": "Haiti", "HM": "Heard & McDonald Islands", "HN": "Honduras", "HK": "Hong Kong SAR China", "HU": "Hungary", "IS": "Iceland", "IN": "India", "ID": "Indonesia", "IR": "Iran", "IQ": "Iraq", "IE": "Ireland", "IM": "Isle of Man", "IL": "Israel", "IT": "Italy", "JM": "Jamaica", "JP": "Japan", "JE": "Jersey", "JO": "Jordan", "KZ": "Kazakhstan", "KE": "Kenya", "KI": "Kiribati", "KW": "Kuwait", "KG": "Kyrgyzstan", "LA": "Laos", "LV": "Latvia", "LB": "Lebanon", "LS": "Lesotho", "LR": "Liberia", "LY": "Libya", "LI": "Liechtenstein", "LT": "Lithuania", "LU": "Luxembourg", "MO": "Macao SAR China", "MG": "Madagascar", "MW": "Malawi", "MY": "Malaysia", "MV": "Maldives", "ML": "Mali", "MT": "Malta", "MH": "Marshall Islands", "MQ": "Martinique", "MR": "Mauritania", "MU": "Mauritius", "YT": "Mayotte", "MX": "Mexico", "FM": "Micronesia", "MD": "Moldova", "MC": "Monaco", "MN": "Mongolia", "ME": "Montenegro", "MS": "Montserrat", "MA": "Morocco", "MZ": "Mozambique", "MM": "Myanmar (Burma)", "NA": "Namibia", "NR": "Nauru", "NP": "Nepal", "NL": "Netherlands", "NC": "New Caledonia", "NZ": "New Zealand", "NI": "Nicaragua", "NE": "Niger", "NG": "Nigeria", "NU": "Niue", "NF": "Norfolk Island", "KP": "North Korea", "MK": "North Macedonia", "MP": "Northern Mariana Islands", "NO": "Norway", "OM": "Oman", "PK": "Pakistan", "PW": "Palau", "PS": "Palestinian Territories", "PA": "Panama", "PG": "Papua New Guinea", "PY": "Paraguay", "PE": "Peru", "PH": "Philippines", "PN": "Pitcairn Islands", "PL": "Poland", "PT": "Portugal", "PR": "Puerto Rico", "QA": "Qatar", "RE": "Réunion", "RO": "Romania", "RU": "Russia", "RW": "Rwanda", "WS": "Samoa", "SM": "San Marino", "ST": "São Tomé & Príncipe", "SA": "Saudi Arabia", "SN": "Senegal", "RS": "Serbia", "SC": "Seychelles", "SL": "Sierra Leone", "SG": "Singapore", "SX": "Sint Maarten", "SK": "Slovakia", "SI": "Slovenia", "SB": "Solomon Islands", "SO": "Somalia", "ZA": "South Africa", "GS": "South Georgia & South Sandwich Islands", "KR": "South Korea", "SS": "South Sudan", "ES": "Spain", "LK": "Sri Lanka", "BL": "St. Barthélemy", "SH": "St. Helena", "KN": "St. Kitts & Nevis", "LC": "St. Lucia", "MF": "St. Martin", "PM": "St. Pierre & Miquelon", "VC": "St. Vincent & Grenadines", "SD": "Sudan", "SR": "Suriname", "SJ": "Svalbard & Jan Mayen", "SE": "Sweden", "CH": "Switzerland", "SY": "Syria", "TW": "Taiwan", "TJ": "Tajikistan", "TZ": "Tanzania", "TH": "Thailand", "TL": "Timor-Leste", "TG": "Togo", "TK": "Tokelau", "TO": "Tonga", "TT": "Trinidad & Tobago", "TN": "Tunisia", "TR": "Türkiye", "TM": "Turkmenistan", "TC": "Turks & Caicos Islands", "TV": "Tuvalu", "UM": "U.S. Outlying Islands", "VI": "U.S. Virgin Islands", "UG": "Uganda", "UA": "Ukraine", "AE": "United Arab Emirates", "GB": "United Kingdom", "US": "United States", "UY": "Uruguay", "UZ": "Uzbekistan", "VU": "Vanuatu", "VA": "Vatican City", "VE": "Venezuela", "VN": "Vietnam", "WF": "Wallis & Futuna", "EH": "Western Sahara", "YE": "Yemen", "ZM": "Zambia", "ZW": "Zimbabwe", "MULTIPLE": "multiple countries / no main country", "PREFER_NOT_TO_SAY": "prefer not to say"};
+    const endsLabels = ['with great difficulty','with difficulty','with some difficulty','fairly easily','easily','very easily'];
+    let currentScaleSnapshot = null, copyMetadata = null;
+    function renderScale() {
+      const version = versionSelect.value;
+      if (/^v2\.[234]-r/.test(version) && currentScaleSnapshot?.version === version && copyMetadata) {
+        const texts=currentScaleSnapshot.texts, refs=copyMetadata.refs;
+        yTitle.textContent=texts[refs['y-title']]; yLabels.replaceChildren();
+        refs['y-labels'].forEach((key,index)=>{const span=document.createElement('span');span.style.setProperty('--pos',(index/3*100)+'%');span.textContent=texts[key];yLabels.appendChild(span);});
+        const xLabels=document.getElementById('admin-x-labels');xLabels.replaceChildren();
+        refs['x-labels'].forEach(key=>{const span=document.createElement('span');span.textContent=texts[key];xLabels.appendChild(span);});
+        document.getElementById('admin-x-title').textContent=texts[refs['x-title']];
+        versionNote.textContent=version+': only responses collected with this exact wording snapshot are shown. Placements are subjective.';
+        return;
+      }
+      document.getElementById('admin-x-title').textContent='how fundamentally different?';
+      const legacyX=document.getElementById('admin-x-labels');legacyX.replaceChildren();
+      ['reproduction','reform','transformation'].forEach(text=>{const span=document.createElement('span');span.textContent=text;legacyX.appendChild(span);});
+      const v2 = version === 'v2.0' || version === 'v2.1';
+      yTitle.textContent = v2 ? 'what does this work afford you?' : version === 'v1.0' ? 'how secure?' : 'original y-coordinate (definition unverified)';
+      yLabels.replaceChildren();
+      const labels = v2 ? ['substantial surplus','secure','getting by','precarious'] : version === 'v1.0' ? ['secure','liveable','precarious'] : ['100','50','0'];
+      labels.forEach((label, index) => {
+        const span = document.createElement('span');
+        span.style.setProperty('--pos', (index / (labels.length - 1) * 100) + '%');
+        span.textContent = label;
+        yLabels.appendChild(span);
+      });
+      versionNote.textContent = version === 'v2.1'
+        ? 'v2.1: y asks to what extent the work provides for your livelihood, including directly connected benefits. The x definition and illustrative examples were revised. Placements remain subjective. This graph shows only v2.1.'
+        : version === 'v2.0'
+        ? 'v2.0: y measures what the work itself provides, from precarious to substantial surplus. Positions are subjective. The household question covers income from all sources. The graph shows only this version.'
+        : version === 'v1.0'
+          ? 'v1.0: original scale, precarious → liveable → secure, with material and psychological needs in its later wording. These original y-coordinates must not be interpreted using the v2.0 scale. The graph shows only v1.0.'
+          : 'Unknown legacy: original definitions are not verified. Do not compare these coordinates directly with a verified version.';
+    }
+    document.getElementById('load-contacts').addEventListener('click',async()=>{
+      const button=document.getElementById('load-contacts'),status=document.getElementById('contacts-status'),rows=document.getElementById('contacts-rows');button.disabled=true;status.textContent='Loading contacts…';rows.replaceChildren();
+      try {const response=await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/contacts',{cache:'no-store'});if(!response.ok)throw new Error();const data=await response.json();if(!Array.isArray(data))throw new Error();for(const contact of data){const row=document.createElement('tr');for(const value of [contact.contact,contact.consent_date,contact.consent_text]){const cell=document.createElement('td');cell.textContent=value;row.appendChild(cell);}rows.appendChild(row);}status.textContent=data.length+' conversation contacts';}
+      catch(_){status.textContent='Could not load contacts. Check that you are signed in and try again.';}finally{button.disabled=false;}
+    });
+    let referenceFilter='', displayedData=[];
+    document.getElementById('reference-search').addEventListener('submit',event=>{
+      event.preventDefault();const value=document.getElementById('reference-search-code').value.trim().toUpperCase();
+      if(value && !/^[A-F0-9]{8}$/.test(value)){document.getElementById('reference-search-code').setCustomValidity('Enter the eight-character reference code.');document.getElementById('reference-search-code').reportValidity();return;}
+      referenceFilter=value;revision++;previous='';update();
+    });
+    document.getElementById('reference-search-code').addEventListener('input',event=>event.target.setCustomValidity(''));
+    document.getElementById('reference-clear').addEventListener('click',()=>{referenceFilter='';document.getElementById('reference-search-code').value='';revision++;previous='';update();});
+    document.getElementById('export-csv').addEventListener('click',()=>{
+      const columns=['reference_code','id','created_at','questionnaire_version','x','y','job','situation','difference_dimensions','difference_dimensions_other','work_country','difference_reason','financial_support','support_other','ends_meet','share_position','share_job'];
+      const cell=value=>{let text=Array.isArray(value)?value.join('; '):String(value??'');if(/^[\s]*[=+@-]/.test(text))text="'"+text;return '"'+text.replace(/"/g,'""')+'"';};
+      const csv='\uFEFF'+[columns.map(cell).join(','),...displayedData.map(row=>columns.map(key=>cell(row[key])).join(','))].join('\r\n');
+      const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),link=document.createElement('a');link.href=url;link.download='research-responses.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
+    let mutating = false;
+    let undoId = null;
+    let loading = false;
+    let previous = '';
+    let stopped = false;
+    let revision = 0;
+
+    async function update() {
+      if (loading || mutating || stopped || document.hidden) return;
+      loading = true;
+      const startedAtRevision = revision;
+      const requestedVersion = versionSelect.value;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const response = await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/responses?version=' + encodeURIComponent(requestedVersion) + (referenceFilter ? '&reference='+encodeURIComponent(referenceFilter) : ''), { cache: 'no-store', signal: controller.signal });
+        if (response.status === 401 || response.status === 403) {
+          stopped = true;
+          graph.replaceChildren();
+          rows.replaceChildren();
+          displayedData=[];
+          previous = '';
+          status.replaceChildren(document.createTextNode('Your session ended. '));
+          const link = document.createElement('a');
+          link.href = '/economicsofdoingthingsdifferently/admin';
+          link.target = '_top';
+          link.textContent = 'Sign in again';
+          status.appendChild(link);
+          return;
+        }
+        if (!response.ok) throw new Error('Load failed.');
+        const data = await response.json();
+        if (!Array.isArray(data) || !data.every(row => row && typeof row.job === 'string' &&
+          typeof row.created_at === 'string' && (referenceFilter ? row.reference_code===referenceFilter : row.questionnaire_version === requestedVersion) && Number.isFinite(row.x) && Number.isFinite(row.y) &&
+          row.x >= 0 && row.x <= 100 && row.y >= 0 && row.y <= 100)) throw new Error('Invalid response data.');
+        if (startedAtRevision !== revision) return;
+        if(referenceFilter && data.length && versionSelect.value!==data[0].questionnaire_version){versionSelect.value=data[0].questionnaire_version;await loadVersionScale();renderScale();}
+        displayedData=data;
+        const snapshot = JSON.stringify(data);
+        if (snapshot !== previous) {
+          const marks = document.createDocumentFragment();
+          const entries = document.createDocumentFragment();
+          for (const row of data) {
+            const mark = document.createElement('span');
+            mark.className = 'dot';
+            mark.style.left = row.x + '%';
+            mark.style.top = (100 - row.y) + '%';
+            mark.title = row.job + ' (' + row.x + ', ' + row.y + ')';
+            marks.appendChild(mark);
+            const tr = document.createElement('tr');
+            for (const [index, text] of [row.job, String(row.x), String(row.y), new Date(row.created_at).toLocaleString(), row.questionnaire_version, row.reference_code || '—'].entries()) {
+              const td = document.createElement('td');
+              td.textContent = text;
+              if (index === 0 && (['v2.0','v2.1'].includes(row.questionnaire_version) || /^v2\.[234]-r/.test(row.questionnaire_version))) {
+                const details = document.createElement('details');
+                const summary = document.createElement('summary');
+                summary.textContent = 'optional answers';
+                details.appendChild(summary);
+                const answers = [
+                  ['what makes the work different (or not)', row.difference_reason || 'not answered'],
+                  ['public map sharing', row.share_position ? (row.share_job ? 'position and work or situation' : 'position only') : 'not shared'],
+                  ['other support — elaboration', row.support_other || 'not answered'],
+                  ['situation', row.situation || (currentScaleSnapshot?.has_extended_questions ? 'not answered' : 'not asked in this questionnaire')],
+                  ['where the difference sits', row.difference_dimensions?.length ? row.difference_dimensions.join('; ') : (currentScaleSnapshot?.has_extended_questions ? 'not answered' : 'not asked in this questionnaire')],
+                  ['other difference — elaboration',row.difference_dimensions_other || (currentScaleSnapshot?.has_difference_other ? 'not answered' : 'not asked in this questionnaire')],
+                  ['country of work', row.work_country ? (workCountryNames[row.work_country] || row.work_country) : (currentScaleSnapshot?.has_work_country ? 'not answered' : 'not asked in this questionnaire')],
+                  ['financial support', Array.isArray(row.financial_support) && row.financial_support.length ? row.financial_support.join('; ') : 'not answered'],
+                  ['household ability to make ends meet', Number.isInteger(row.ends_meet) && row.ends_meet >= 1 && row.ends_meet <= 6 ? row.ends_meet + ' — ' + endsLabels[row.ends_meet - 1] : 'not answered']
+                ];
+                for (const [label, answer] of answers) {
+                  const paragraph = document.createElement('p');
+                  paragraph.textContent = label + ': ' + answer;
+                  details.appendChild(paragraph);
+                }
+                td.appendChild(details);
+              }
+              tr.appendChild(td);
+            }
+            const actions = document.createElement('td');
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.textContent = 'delete';
+            remove.setAttribute('aria-label', 'Delete entry: ' + row.job);
+            remove.addEventListener('click', () => removeEntry(row));
+            actions.appendChild(remove);
+            tr.appendChild(actions);
+            entries.appendChild(tr);
+          }
+          graph.replaceChildren(marks);
+          rows.replaceChildren(entries);
+          previous = snapshot;
+        }
+        status.textContent = data.length + (data.length === 1 ? ' response' : ' responses') +
+          (referenceFilter ? ' matching reference '+referenceFilter+' across all versions' : ' in ' + requestedVersion) + ' · updates every 15 seconds · checked ' + new Date().toLocaleTimeString();
+      } catch (_) {
+        status.textContent = 'Could not update. Displayed responses may be out of date. Retrying every 15 seconds.';
+      } finally {
+        clearTimeout(timeout);
+        loading = false;
+        if (startedAtRevision !== revision) update();
+      }
+    }
+    async function changeEntry(id, deleted) {
+      if (mutating) return false;
+      mutating = true;
+      revision++;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const response = await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/responses/' + encodeURIComponent(id) + (deleted ? '' : '/restore'), {
+          method: deleted ? 'DELETE' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error('Change failed.');
+        const result = await response.json();
+        if (!result.success) throw new Error('Entry not found.');
+        return true;
+      } catch (_) {
+        actionStatus.textContent = 'Could not confirm the change. Refresh to check the entry before trying again.';
+        return false;
+      } finally {
+        clearTimeout(timeout);
+        mutating = false;
+        revision++;
+        // Wait for any older snapshot before drawing the result of this change.
+        if (!loading) update();
+      }
+    }
+    async function removeEntry(row) {
+      if (mutating || !window.confirm('Delete this entry?\n\n' + row.job + '\n\nYou can undo this.')) return;
+      if (!await changeEntry(row.id, true)) return;
+      undoId = row.id;
+      actionStatus.replaceChildren(document.createTextNode('Entry deleted. '));
+      const undo = document.createElement('button');
+      undo.type = 'button';
+      undo.textContent = 'undo';
+      undo.addEventListener('click', async () => {
+        if (mutating || undoId === null) return;
+        const id = undoId;
+        if (await changeEntry(id, false)) {
+          undoId = null;
+          actionStatus.textContent = 'Entry restored.';
+        }
+      });
+      actionStatus.appendChild(undo);
+    }
+    versionSelect.addEventListener('change', () => {
+      revision++;
+      previous = '';
+      graph.replaceChildren();
+      rows.replaceChildren();
+      status.textContent = 'Loading ' + versionSelect.value + '…';
+      loadVersionScale().then(()=>{renderScale();update();}).catch(()=>{status.textContent='Could not load this wording version. Reload to try again.';});
+    });
+    async function loadVersionScale() {
+      const selected=versionSelect.value;
+      if (!/^v2\.[234]-r/.test(selected)) { currentScaleSnapshot=null; return; }
+      const response=await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/content?version='+encodeURIComponent(selected),{cache:'no-store'});
+      if (!response.ok) throw new Error('Could not load version.');
+      const data=await response.json();
+      if (selected===versionSelect.value) currentScaleSnapshot=data.content;
+    }
+    const editorStatus=document.getElementById('editor-status'), editorFields=document.getElementById('editor-fields');
+    const publishButton=document.getElementById('editor-publish'), previewButton=document.getElementById('editor-preview-button');
+    const fieldInputs=new Map(); let publishedCopy=null;
+    function editorTexts() { return Object.fromEntries(Array.from(fieldInputs,([key,input])=>[key,input.value])); }
+    function adoptPublished(content) {
+      publishedCopy=content;currentScaleSnapshot=content;
+      for(const [key,input] of fieldInputs) input.value=content.texts[key];
+      versionSelect.replaceChildren();
+      for(const entry of content.versions || [{version:content.version}]) {const option=document.createElement('option');option.value=entry.version;option.textContent=entry.version;versionSelect.appendChild(option);}
+      for(const version of ['v2.1','v2.0','v1.0','unknown-legacy']) {const option=document.createElement('option');option.value=version;option.textContent=version;versionSelect.appendChild(option);}
+      versionSelect.value=content.version;revision++;previous='';graph.replaceChildren();rows.replaceChildren();renderScale();update();
+    }
+    async function contentPost(path) {
+      const response=await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/content'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({revision:publishedCopy.revision,texts:editorTexts()})});
+      if (!response.ok) { const error=await response.json().catch(()=>({}));throw new Error(error.error || 'Could not save. Reload and try again.'); }
+      return response;
+    }
+    document.getElementById('editor-preview-size').addEventListener('change',event=>{document.getElementById('editor-preview').style.width=event.target.value==='mobile'?'375px':'100%';});
+    previewButton.addEventListener('click',async()=>{
+      if(!publishedCopy)return;previewButton.disabled=true;editorStatus.textContent='Preparing preview…';
+      try {const response=await contentPost('/preview');const iframe=document.getElementById('editor-preview');iframe.srcdoc=await response.text();iframe.hidden=false;editorStatus.textContent='Preview only. The public page has not changed.';}
+      catch(error){editorStatus.textContent=error.message;}finally{previewButton.disabled=false;}
+    });
+    publishButton.addEventListener('click',async()=>{
+      if(!publishedCopy)return;publishButton.disabled=true;previewButton.disabled=true;editorStatus.textContent='Publishing text…';
+      try{const response=await contentPost('');adoptPublished(await response.json());editorStatus.textContent='Published. New responses use '+publishedCopy.version+'.';document.getElementById('editor-preview').hidden=true;}
+      catch(error){editorStatus.textContent=error.message;}finally{publishButton.disabled=false;previewButton.disabled=false;}
+    });
+    document.getElementById('editor-reset').addEventListener('click',()=>{if(publishedCopy){for(const [key,input] of fieldInputs)input.value=publishedCopy.texts[key];document.getElementById('editor-preview').hidden=true;editorStatus.textContent='Unsaved changes discarded.';}});
+    document.getElementById('editor-search').addEventListener('input',event=>{const query=event.target.value.toLowerCase();for(const input of fieldInputs.values())input.parentElement.hidden=!(input.value+' '+input.dataset.label).toLowerCase().includes(query);for(const details of editorFields.querySelectorAll('details')){details.open=query.length>0 || details.dataset.group==='introduction';details.hidden=query.length>0 && Array.from(details.querySelectorAll('textarea')).every(input=>input.parentElement.hidden);}});
+    async function loadEditor() {
+      try {
+        const response=await window.researchAdminFetch('/economicsofdoingthingsdifferently/api/content',{cache:'no-store'});if(!response.ok)throw new Error('Could not load the text editor. Reload to try again.');
+        const data=await response.json();copyMetadata=data;editorFields.replaceChildren();const groups=new Map();
+        for(const field of data.catalog){
+          if(!groups.has(field.group)){const details=document.createElement('details'),summary=document.createElement('summary'),set=document.createElement('fieldset'),legend=document.createElement('legend');details.dataset.group=field.group;details.open=field.group==='introduction';summary.textContent=field.group;legend.textContent=field.group;legend.className='editor-sr-only';set.appendChild(legend);details.appendChild(summary);details.appendChild(set);editorFields.appendChild(details);groups.set(field.group,set);}
+          const wrapper=document.createElement('div'),label=document.createElement('label'),input=document.createElement('textarea');
+          input.id='copy-'+field.key;input.maxLength=5000;input.rows=field.defaultValue.length>140?4:2;input.dataset.label=field.label+' '+field.group;label.htmlFor=input.id;label.textContent=field.label;
+          wrapper.appendChild(label);wrapper.appendChild(input);groups.get(field.group).appendChild(wrapper);fieldInputs.set(field.key,input);
+        }
+        adoptPublished(data.content);editorStatus.textContent='Editing '+publishedCopy.version+'. Changes appear publicly only when you publish.';
+      }catch(error){editorStatus.textContent=error.message;status.textContent='Could not load questionnaire versions. Reload to try again.';}
+    }
+    loadEditor();
+    window.researchAdminTimer=setInterval(update,15000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        graph.replaceChildren();
+        rows.replaceChildren();
+        previous = '';
+        status.textContent = 'Paused while this tab is hidden.';
+      } else update();
+    });
+  </script>
+</body>
+</html>

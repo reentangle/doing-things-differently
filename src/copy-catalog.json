@@ -1,0 +1,878 @@
+[
+  {
+    "key": "c022",
+    "label": "page title",
+    "group": "introduction",
+    "defaultValue": "economics of doing things differently"
+  },
+  {
+    "key": "c048",
+    "label": "opening premise beneath title",
+    "group": "introduction",
+    "defaultValue": "we sustain systems through our work. but to what extent do those systems sustain us?"
+  },
+  {
+    "key": "c105",
+    "label": "introduction",
+    "group": "introduction",
+    "defaultValue": "an anonymous research experiment exploring how our work relates to dominant systems, and how well it sustains us. "
+  },
+  {
+    "key": "c096",
+    "label": "survey invitation and time estimate",
+    "group": "introduction",
+    "defaultValue": "once you have completed the survey, you can view where others have plotted their situations.\nsurvey time: 1-3 minutes"
+  },
+  {
+    "key": "c047",
+    "label": "about link",
+    "group": "introduction",
+    "defaultValue": "about this experiment"
+  },
+  {
+    "key": "c049",
+    "label": "about — introduction",
+    "group": "introduction",
+    "defaultValue": "this experiment grew out of conversations about the kinds of work we do, the assumptions, values and logics they operate within, and what makes different ways of working possible.\n\nwe're curious to explore the relationship between how deeply our work reproduces, questions or transforms dominant ways of organising, and how well that work sustains our livelihoods."
+  },
+  {
+    "key": "c050",
+    "label": "about — research context",
+    "group": "introduction",
+    "defaultValue": "by inviting people to place themselves on this map, we hope to gather perspectives that reveal patterns, contradictions and questions worth exploring further.\n\nthere are no right answers. this is an exploratory inquiry, not a representative study, and each placement reflects someone's own experience and interpretation.\n\nthis experiment is part of research into the political economy of transition: how power, ownership and resources shape the possibilities for doing work differently.\n\nquestion 6 uses the wording of the EU-SILC survey, so answers can be compared with danish and european figures. this provides a point of comparison; these self-selected responses are not representative of the wider population."
+  },
+  {
+    "key": "c116",
+    "label": "participant counter — singular (keep {count})",
+    "group": "introduction",
+    "defaultValue": "{count} placement on the map so far."
+  },
+  {
+    "key": "c117",
+    "label": "participant counter — plural (keep {count})",
+    "group": "introduction",
+    "defaultValue": "{count} placements on the map so far."
+  },
+  {
+    "key": "c023",
+    "label": "map heading",
+    "group": "map — instructions",
+    "defaultValue": "where does your work sit?"
+  },
+  {
+    "key": "c024",
+    "label": "map instructions",
+    "group": "map — instructions",
+    "defaultValue": "place yourself by the work you put most of yourself into, paid or unpaid."
+  },
+  {
+    "key": "c036",
+    "label": "map description for screen readers",
+    "group": "map — instructions",
+    "defaultValue": "Place your work on the graph"
+  },
+  {
+    "key": "c037",
+    "label": "required placement field — accessible label",
+    "group": "map — instructions",
+    "defaultValue": "Choose a position on the map"
+  },
+  {
+    "key": "c045",
+    "label": "x-axis title",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "how far does your work depart from existing systems?"
+  },
+  {
+    "key": "c046",
+    "label": "system departure information button",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "how far it departs from the assumptions and logics of the systems around you."
+  },
+  {
+    "key": "c040",
+    "label": "reproduction — axis label",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "as things are"
+  },
+  {
+    "key": "c127",
+    "label": "as things are — definition (hover, tap or focus)",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "works within existing systems as they are"
+  },
+  {
+    "key": "c038",
+    "label": "historical x-axis example — retained for compatibility",
+    "group": "system messages — advanced",
+    "defaultValue": "operates within and thereby sustains dominant assumptions about value, progress, nature, and social relations"
+  },
+  {
+    "key": "c042",
+    "label": "reform — axis label",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "reforming"
+  },
+  {
+    "key": "c128",
+    "label": "reforming — definition (hover, tap or focus)",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "changes how existing systems work while keeping their underlying assumptions"
+  },
+  {
+    "key": "c041",
+    "label": "historical x-axis example — retained for compatibility",
+    "group": "system messages — advanced",
+    "defaultValue": "reduces harm or improves outcomes while leaving underlying assumptions largely intact"
+  },
+  {
+    "key": "c044",
+    "label": "transformation — axis label",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "transforming"
+  },
+  {
+    "key": "c129",
+    "label": "transforming — definition (hover, tap or focus)",
+    "group": "x-axis — labels, anchors and examples",
+    "defaultValue": "works from fundamentally different assumptions and logics"
+  },
+  {
+    "key": "c043",
+    "label": "historical x-axis example — retained for compatibility",
+    "group": "system messages — advanced",
+    "defaultValue": "questions assumptions and builds from different ones, shifting power, ownership and relationships"
+  },
+  {
+    "key": "c039",
+    "label": "what can count as work — information button",
+    "group": "map — instructions",
+    "defaultValue": "if you're between jobs, caring, organising, making or looking for work can count too."
+  },
+  {
+    "key": "c025",
+    "label": "y-axis title",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "how well does this work support your livelihood?"
+  },
+  {
+    "key": "c026",
+    "label": "y-axis question",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "to what extent does the work you do provide for your livelihood?"
+  },
+  {
+    "key": "c028",
+    "label": "livelihood information button",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "income and benefits from this work alone, including housing or food. leave out other income, savings or support. unpaid work may give little or nothing."
+  },
+  {
+    "key": "c029",
+    "label": "substantial surplus — axis label",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "surplus"
+  },
+  {
+    "key": "c027",
+    "label": "substantial surplus — hover / tap explanation",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "work generates considerable income beyond living costs."
+  },
+  {
+    "key": "c031",
+    "label": "secure — axis label",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "secure"
+  },
+  {
+    "key": "c030",
+    "label": "secure — hover / tap explanation",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "work reliably covers needs and allows savings."
+  },
+  {
+    "key": "c033",
+    "label": "getting by — axis label",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "getting by"
+  },
+  {
+    "key": "c032",
+    "label": "getting by — hover / tap explanation",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "work covers everyday needs, with little to spare."
+  },
+  {
+    "key": "c035",
+    "label": "precarious — axis label",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "precarious"
+  },
+  {
+    "key": "c034",
+    "label": "precarious — hover / tap explanation",
+    "group": "y-axis — labels and examples",
+    "defaultValue": "work doesn't reliably cover basic living costs."
+  },
+  {
+    "key": "c123",
+    "label": "question 1 — where the difference sits",
+    "group": "questions — in survey order",
+    "defaultValue": "1. where does that difference (or sameness) mostly sit? (select all that apply)"
+  },
+  {
+    "key": "c124",
+    "label": "question 1 — optional hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional"
+  },
+  {
+    "key": "c138",
+    "label": "question 1 — choice: what the work is for",
+    "group": "questions — in survey order",
+    "defaultValue": "what the work is for"
+  },
+  {
+    "key": "c139",
+    "label": "question 1 — choice: how it's owned and decided",
+    "group": "questions — in survey order",
+    "defaultValue": "how it's owned and decided"
+  },
+  {
+    "key": "c140",
+    "label": "question 1 — choice: how money and value flow",
+    "group": "questions — in survey order",
+    "defaultValue": "how money and value flow"
+  },
+  {
+    "key": "c141",
+    "label": "question 1 — choice: relationships with people, land, time",
+    "group": "questions — in survey order",
+    "defaultValue": "relationships with people, land, time"
+  },
+  {
+    "key": "c142",
+    "label": "question 1 — choice: methods and practice",
+    "group": "questions — in survey order",
+    "defaultValue": "methods and practice"
+  },
+  {
+    "key": "c143",
+    "label": "question 1 — choice: it doesn't differ much",
+    "group": "questions — in survey order",
+    "defaultValue": "it doesn't differ much"
+  },
+  {
+    "key": "c144",
+    "label": "question 1 — other choice",
+    "group": "questions — in survey order",
+    "defaultValue": "other"
+  },
+  {
+    "key": "c145",
+    "label": "question 1 — other elaboration label",
+    "group": "questions — in survey order",
+    "defaultValue": "please elaborate"
+  },
+  {
+    "key": "c146",
+    "label": "question 1 — other elaboration hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — up to 300 characters"
+  },
+  {
+    "key": "c051",
+    "label": "question 2 — work or situation",
+    "group": "questions — in survey order",
+    "defaultValue": "2. what is your current work or situation? (required)"
+  },
+  {
+    "key": "c130",
+    "label": "question 2 — example inside the field",
+    "group": "questions — in survey order",
+    "defaultValue": "e.g. freelance designer, or between jobs, organising a food co-op"
+  },
+  {
+    "key": "c125",
+    "label": "question 3 — situation",
+    "group": "questions — in survey order",
+    "defaultValue": "3. which best describes your situation? (optional)"
+  },
+  {
+    "key": "c126",
+    "label": "question 3 — blank choice",
+    "group": "questions — in survey order",
+    "defaultValue": "— leave unanswered —"
+  },
+  {
+    "key": "c131",
+    "label": "question 3 — choice: employed",
+    "group": "questions — in survey order",
+    "defaultValue": "employed"
+  },
+  {
+    "key": "c132",
+    "label": "question 3 — choice: self-employed or freelance",
+    "group": "questions — in survey order",
+    "defaultValue": "self-employed or freelance"
+  },
+  {
+    "key": "c133",
+    "label": "question 3 — choice: between work",
+    "group": "questions — in survey order",
+    "defaultValue": "between work"
+  },
+  {
+    "key": "c134",
+    "label": "question 3 — choice: studying",
+    "group": "questions — in survey order",
+    "defaultValue": "studying"
+  },
+  {
+    "key": "c135",
+    "label": "question 3 — choice: parental or care leave",
+    "group": "questions — in survey order",
+    "defaultValue": "parental or care leave"
+  },
+  {
+    "key": "c136",
+    "label": "question 3 — choice: retired",
+    "group": "questions — in survey order",
+    "defaultValue": "retired"
+  },
+  {
+    "key": "c137",
+    "label": "question 3 — choice: other",
+    "group": "questions — in survey order",
+    "defaultValue": "other"
+  },
+  {
+    "key": "c052",
+    "label": "question 4 — additional placement context",
+    "group": "questions — in survey order",
+    "defaultValue": "4. is there anything else about your work or situation that would help us understand your placement?"
+  },
+  {
+    "key": "c053",
+    "label": "question 4 — optional hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — a few words are enough (up to 500 characters)"
+  },
+  {
+    "key": "c054",
+    "label": "question 5 — financial support",
+    "group": "questions — in survey order",
+    "defaultValue": "5. what financially sustains your work? (select all that apply)"
+  },
+  {
+    "key": "c055",
+    "label": "question 5 — optional hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — resources that enable you to continue doing this work"
+  },
+  {
+    "key": "c056",
+    "label": "question 5 — choice: income from this work",
+    "group": "questions — in survey order",
+    "defaultValue": "income from this work"
+  },
+  {
+    "key": "c057",
+    "label": "question 5 — choice: other work",
+    "group": "questions — in survey order",
+    "defaultValue": "other work"
+  },
+  {
+    "key": "c058",
+    "label": "question 5 — choice: savings",
+    "group": "questions — in survey order",
+    "defaultValue": "savings"
+  },
+  {
+    "key": "c059",
+    "label": "question 5 — choice: family",
+    "group": "questions — in survey order",
+    "defaultValue": "family"
+  },
+  {
+    "key": "c060",
+    "label": "question 5 — choice: public support",
+    "group": "questions — in survey order",
+    "defaultValue": "public support"
+  },
+  {
+    "key": "c061",
+    "label": "question 5 — choice: collective resources",
+    "group": "questions — in survey order",
+    "defaultValue": "collective resources"
+  },
+  {
+    "key": "c062",
+    "label": "question 5 — choice: other",
+    "group": "questions — in survey order",
+    "defaultValue": "other"
+  },
+  {
+    "key": "c063",
+    "label": "other support — follow-up label",
+    "group": "questions — in survey order",
+    "defaultValue": "please elaborate"
+  },
+  {
+    "key": "c064",
+    "label": "other support — optional hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — up to 300 characters"
+  },
+  {
+    "key": "c065",
+    "label": "question 6 — household finances (EU-SILC)",
+    "group": "questions — in survey order",
+    "defaultValue": "6. thinking of your household's total income, is your household able to make ends meet, that is, to pay for its usual necessary expenses?"
+  },
+  {
+    "key": "c066",
+    "label": "question 6 — optional hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — this concerns household finances from all sources, separately from what the work affords you."
+  },
+  {
+    "key": "c067",
+    "label": "question 6 — blank choice",
+    "group": "questions — in survey order",
+    "defaultValue": "— choose an answer, or leave unanswered —"
+  },
+  {
+    "key": "c068",
+    "label": "question 6 — choice: with great difficulty",
+    "group": "questions — in survey order",
+    "defaultValue": "with great difficulty"
+  },
+  {
+    "key": "c069",
+    "label": "question 6 — choice: with difficulty",
+    "group": "questions — in survey order",
+    "defaultValue": "with difficulty"
+  },
+  {
+    "key": "c070",
+    "label": "question 6 — choice: with some difficulty",
+    "group": "questions — in survey order",
+    "defaultValue": "with some difficulty"
+  },
+  {
+    "key": "c071",
+    "label": "question 6 — choice: fairly easily",
+    "group": "questions — in survey order",
+    "defaultValue": "fairly easily"
+  },
+  {
+    "key": "c072",
+    "label": "question 6 — choice: easily",
+    "group": "questions — in survey order",
+    "defaultValue": "easily"
+  },
+  {
+    "key": "c073",
+    "label": "question 6 — choice: very easily",
+    "group": "questions — in survey order",
+    "defaultValue": "very easily"
+  },
+  {
+    "key": "c118",
+    "label": "question 7 — country of work",
+    "group": "questions — in survey order",
+    "defaultValue": "7. which country do you mainly do this work in?"
+  },
+  {
+    "key": "c119",
+    "label": "question 7 — privacy hint",
+    "group": "questions — in survey order",
+    "defaultValue": "optional — kept private; not shown on the shared map."
+  },
+  {
+    "key": "c120",
+    "label": "question 7 — blank choice",
+    "group": "questions — in survey order",
+    "defaultValue": "— choose a country, or leave unanswered —"
+  },
+  {
+    "key": "c121",
+    "label": "question 7 — multiple countries choice",
+    "group": "questions — in survey order",
+    "defaultValue": "multiple countries / no main country"
+  },
+  {
+    "key": "c122",
+    "label": "question 7 — prefer not to say choice",
+    "group": "questions — in survey order",
+    "defaultValue": "prefer not to say"
+  },
+  {
+    "key": "c075",
+    "label": "sharing — section heading",
+    "group": "sharing and privacy",
+    "defaultValue": "sharing your response (optional)"
+  },
+  {
+    "key": "c076",
+    "label": "consent to share position",
+    "group": "sharing and privacy",
+    "defaultValue": "I consent to my position being shown on the shared map to people who have submitted a response."
+  },
+  {
+    "key": "c077",
+    "label": "separate consent to share work or situation",
+    "group": "sharing and privacy",
+    "defaultValue": "I also consent to my work or situation being shown with my cross."
+  },
+  {
+    "key": "c078",
+    "label": "sharing — explanation",
+    "group": "sharing and privacy",
+    "defaultValue": "both choices are optional and start unticked. your other answers stay private. without the second choice, your work or situation is not shown. shared responses may be copied by people viewing the map."
+  },
+  {
+    "key": "c079",
+    "label": "privacy — disclosure heading",
+    "group": "sharing and privacy",
+    "defaultValue": "privacy and research information"
+  },
+  {
+    "key": "c080",
+    "label": "privacy — what is collected",
+    "group": "sharing and privacy",
+    "defaultValue": "this is an independent research experiment. we collect your placement on the map, your work or situation, and any optional answers you provide. the survey does not ask for your name or email address. after submitting, you may separately opt in to a conversation and leave a way to reach you."
+  },
+  {
+    "key": "c081",
+    "label": "privacy — access and publication",
+    "group": "sharing and privacy",
+    "defaultValue": "full individual submissions are accessible only to the researcher through the private research page. if you opt in above, your coordinates and, with separate permission, your work or situation can also be seen by respondents viewing the shared map. your situation, country of work, difference dimensions and other written and financial answers are not shown on that map. findings may be shared in aggregate, with any quoted descriptions de-identified."
+  },
+  {
+    "key": "c082",
+    "label": "privacy — avoid identifying information",
+    "group": "sharing and privacy",
+    "defaultValue": "please avoid including names, employers or other information that could identify you or someone else."
+  },
+  {
+    "key": "c083",
+    "label": "privacy — storage and retention",
+    "group": "sharing and privacy",
+    "defaultValue": "responses are stored using Supabase; this website is hosted using Sites. responses in the research database are retained for one year from submission, including entries removed through admin, then deleted automatically. deletion checks run every 15 minutes. provider-operated technical logs and backups may follow their own retention schedules. separately provided contact details are also retained for one year and are stored without a response ID or reference code."
+  },
+  {
+    "key": "c084",
+    "label": "researcher contact — introduction",
+    "group": "sharing and privacy",
+    "defaultValue": "responsible researcher: jonas. for questions about the research or your data, contact"
+  },
+  {
+    "key": "c085",
+    "label": "researcher contact — email",
+    "group": "sharing and privacy",
+    "defaultValue": "jonas@amongstudio.net"
+  },
+  {
+    "key": "c086",
+    "label": "researcher contact — reference-code instructions",
+    "group": "sharing and privacy",
+    "defaultValue": ". quote your reference code to see or delete your response."
+  },
+  {
+    "key": "c101",
+    "label": "start survey button",
+    "group": "buttons and navigation",
+    "defaultValue": "place your work"
+  },
+  {
+    "key": "c102",
+    "label": "continue button",
+    "group": "buttons and navigation",
+    "defaultValue": "continue"
+  },
+  {
+    "key": "c103",
+    "label": "back button",
+    "group": "buttons and navigation",
+    "defaultValue": "back"
+  },
+  {
+    "key": "c087",
+    "label": "submit button",
+    "group": "buttons and navigation",
+    "defaultValue": "submit"
+  },
+  {
+    "key": "c104",
+    "label": "progress indicator (keep {step})",
+    "group": "buttons and navigation",
+    "defaultValue": "{step} of 3"
+  },
+  {
+    "key": "c107",
+    "label": "questions heading",
+    "group": "buttons and navigation",
+    "defaultValue": "a little about your work"
+  },
+  {
+    "key": "c106",
+    "label": "thank-you heading",
+    "group": "thank-you page and shared map",
+    "defaultValue": "thank you."
+  },
+  {
+    "key": "c097",
+    "label": "reference-code confirmation (keep {code})",
+    "group": "thank-you page and shared map",
+    "defaultValue": "your reference code: {code}. keep it somewhere safe. quote your reference code to see or delete your response."
+  },
+  {
+    "key": "c088",
+    "label": "results — accessible section label",
+    "group": "thank-you page and shared map",
+    "defaultValue": "After submission"
+  },
+  {
+    "key": "c003",
+    "label": "see where others placed their work",
+    "group": "thank-you page and shared map",
+    "defaultValue": "see where others placed their work"
+  },
+  {
+    "key": "c008",
+    "label": "hide shared map",
+    "group": "thank-you page and shared map",
+    "defaultValue": "hide shared map"
+  },
+  {
+    "key": "c089",
+    "label": "stop sharing button",
+    "group": "thank-you page and shared map",
+    "defaultValue": "stop sharing my response"
+  },
+  {
+    "key": "c090",
+    "label": "shared map — instructions",
+    "group": "thank-you page and shared map",
+    "defaultValue": "grey crosses are consenting responses collected with the same questionnaire wording. your cross is black. hover, tap or focus a cross for its placement and any shared work or situation."
+  },
+  {
+    "key": "c108",
+    "label": "shared map — accessible description",
+    "group": "thank-you page and shared map",
+    "defaultValue": "shared positions. your response is black."
+  },
+  {
+    "key": "shared_count",
+    "label": "shared map counter (keep {count})",
+    "group": "thank-you page and shared map",
+    "defaultValue": "{count} other consenting responses. Your cross is black."
+  },
+  {
+    "key": "c091",
+    "label": "framework — heading",
+    "group": "thank-you page and shared map",
+    "defaultValue": "the idea behind the experiment"
+  },
+  {
+    "key": "c092",
+    "label": "framework — explanation",
+    "group": "thank-you page and shared map",
+    "defaultValue": "this was the hypothesis that inspired the experiment, not a conclusion drawn from the responses. the purpose of gathering placements is to investigate where it holds, where it doesn't, and what the map might be missing."
+  },
+  {
+    "key": "c093",
+    "label": "framework image — accessible description",
+    "group": "thank-you page and shared map",
+    "defaultValue": "Hypothesised relationship between what work affords and how fundamentally it departs from dominant systems. Work-derived material security and financial surplus runs from precarious through getting by and secure to substantial surplus. The four regions are structural advantage, systemic precarity, transformative precarity and transformative viability. A descending current tendency is a hypothesis, not observed results."
+  },
+  {
+    "key": "c094",
+    "label": "framework image — caption",
+    "group": "thank-you page and shared map",
+    "defaultValue": "original conceptual framework (v2.0), shown after you submit. select the image to view it at full size."
+  },
+  {
+    "key": "c098",
+    "label": "copy survey link button",
+    "group": "thank-you page and shared map",
+    "defaultValue": "copy survey link"
+  },
+  {
+    "key": "c099",
+    "label": "survey link copied message",
+    "group": "thank-you page and shared map",
+    "defaultValue": "link copied — send it to a colleague or friend."
+  },
+  {
+    "key": "c100",
+    "label": "manual link-copy instructions",
+    "group": "thank-you page and shared map",
+    "defaultValue": "copy this link to send to a colleague or friend:"
+  },
+  {
+    "key": "c109",
+    "label": "conversation invitation — heading",
+    "group": "optional conversation invitation",
+    "defaultValue": "open to a conversation?"
+  },
+  {
+    "key": "c110",
+    "label": "conversation invitation — privacy explanation",
+    "group": "optional conversation invitation",
+    "defaultValue": "optional: leave a way to reach you if you would like to talk about this research. contact details are stored separately, without a response ID or reference code, and kept for one year. to have them removed, email jonas@amongstudio.net."
+  },
+  {
+    "key": "c111",
+    "label": "conversation invitation — separate consent",
+    "group": "optional conversation invitation",
+    "defaultValue": "I consent to jonas contacting me about this research."
+  },
+  {
+    "key": "c112",
+    "label": "contact field label",
+    "group": "optional conversation invitation",
+    "defaultValue": "email or another way to reach you"
+  },
+  {
+    "key": "c113",
+    "label": "save contact details button",
+    "group": "optional conversation invitation",
+    "defaultValue": "save contact details"
+  },
+  {
+    "key": "c114",
+    "label": "contact saved message",
+    "group": "optional conversation invitation",
+    "defaultValue": "thank you. your contact details have been saved separately. this does not change your survey response."
+  },
+  {
+    "key": "c115",
+    "label": "contact save error",
+    "group": "optional conversation invitation",
+    "defaultValue": "could not save your contact details. your survey response is already saved. please try again."
+  },
+  {
+    "key": "c001",
+    "label": "Please choose a position on the map.",
+    "group": "system messages — advanced",
+    "defaultValue": "Please choose a position on the map."
+  },
+  {
+    "key": "c002",
+    "label": "Submissions are not open yet. Supabase setup is required.",
+    "group": "system messages — advanced",
+    "defaultValue": "Submissions are not open yet. Supabase setup is required."
+  },
+  {
+    "key": "c004",
+    "label": "Loading shared positions…",
+    "group": "system messages — advanced",
+    "defaultValue": "Loading shared positions…"
+  },
+  {
+    "key": "c005",
+    "label": "Could not load the shared map. Try again.",
+    "group": "system messages — advanced",
+    "defaultValue": "Could not load the shared map. Try again."
+  },
+  {
+    "key": "c006",
+    "label": "your response",
+    "group": "system messages — advanced",
+    "defaultValue": "your response"
+  },
+  {
+    "key": "c007",
+    "label": "job title not shared",
+    "group": "system messages — advanced",
+    "defaultValue": "work or situation not shared"
+  },
+  {
+    "key": "c009",
+    "label": "Could not change sharing. Try again.",
+    "group": "system messages — advanced",
+    "defaultValue": "Could not change sharing. Try again."
+  },
+  {
+    "key": "c010",
+    "label": "Your response is no longer shared. Copies previously made by viewers cannot be recalled.",
+    "group": "system messages — advanced",
+    "defaultValue": "Your response is no longer shared. Copies previously made by viewers cannot be recalled."
+  },
+  {
+    "key": "c011",
+    "label": "Enter your current job or position.",
+    "group": "system messages — advanced",
+    "defaultValue": "Enter your current job or position."
+  },
+  {
+    "key": "c012",
+    "label": "Please wait 30 seconds between submissions.",
+    "group": "system messages — advanced",
+    "defaultValue": "Please wait 30 seconds between submissions."
+  },
+  {
+    "key": "c013",
+    "label": "Saving…",
+    "group": "system messages — advanced",
+    "defaultValue": "Saving…"
+  },
+  {
+    "key": "c014",
+    "label": "Could not save. Please try again or let the researcher know.",
+    "group": "system messages — advanced",
+    "defaultValue": "Could not save. Please try again or let the researcher know."
+  },
+  {
+    "key": "c015",
+    "label": "Could not confirm the save. Check with the researcher before retrying.",
+    "group": "system messages — advanced",
+    "defaultValue": "Could not confirm the save. Check with the researcher before retrying."
+  },
+  {
+    "key": "c016",
+    "label": "no position selected.",
+    "group": "system messages — advanced",
+    "defaultValue": "no position selected."
+  },
+  {
+    "key": "c017",
+    "label": "Saved. Thank you.",
+    "group": "system messages — advanced",
+    "defaultValue": "Saved. Thank you."
+  },
+  {
+    "key": "c018",
+    "label": "Connection interrupted. Your response may have saved; check with the researcher before retrying.",
+    "group": "system messages — advanced",
+    "defaultValue": "Connection interrupted. Your response may have saved; check with the researcher before retrying."
+  },
+  {
+    "key": "selection_template",
+    "label": "screen-reader placement announcement (keep {difference} and {livelihood})",
+    "group": "system messages — advanced",
+    "defaultValue": "{difference}, {livelihood}."
+  },
+  {
+    "key": "point_template",
+    "label": "legacy placement message — retained for compatibility",
+    "group": "system messages — advanced",
+    "defaultValue": "difference: {x}/100; livelihood: {y}/100."
+  },
+  {
+    "key": "c074",
+    "label": "spam protection — hidden field label",
+    "group": "system messages — advanced",
+    "defaultValue": "Leave this field empty"
+  },
+  {
+    "key": "c095",
+    "label": "JavaScript unavailable notice",
+    "group": "system messages — advanced",
+    "defaultValue": "This experiment needs JavaScript to save your response."
+  }
+]

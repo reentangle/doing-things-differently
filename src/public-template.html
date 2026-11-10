@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="questionnaire-version" content="v2.1">
+  <meta name="description" content="where would you place your work? a small map of how our work relates to dominant systems, and how well it sustains us.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="@@COPY:c022@@">
+  <meta property="og:description" content="where would you place your work? a small map of how our work relates to dominant systems, and how well it sustains us.">
+  <meta property="og:image" content="https://research.amongstudio.net/economicsofdoingthingsdifferently/share-map.png">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Empty map of how fundamentally different work is and what it affords, from precarious to substantial surplus.">
+  <meta property="og:url" content="https://research.amongstudio.net/economicsofdoingthingsdifferently">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://research.amongstudio.net/economicsofdoingthingsdifferently">
+  <title>@@COPY:c022@@</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 32px auto; padding: 0 20px; max-width: 800px; color: #000; background: #F4EFE8; font: 16px Arial, sans-serif; }
+    h1 { margin: 0 0 12px; font-size: 24px; }
+    h2 { font-size: 20px; }
+    .question { margin: 0 0 20px; }
+    .instructions, .axis-description, .note { font-size: 13px; line-height: 1.5; }
+    @media (hover: none) and (pointer: coarse) { .keyboard-instruction { display: none; } }
+    .instructions { margin-bottom: 28px; }
+    .y-title { margin: 0 0 6px 144px; }
+    .y-context { display: block; margin-top: 6px; font-size: 12px; }
+    .y-description { margin: 0 0 24px 144px; }
+    .plot-row { display: flex; }
+    .y-labels { position: relative; width: 144px; flex-shrink: 0; font-size: 13px; }
+    .y-labels .axis-label { position: absolute; right: 12px; top: var(--pos); transform: translateY(-50%); white-space: nowrap; }
+    .y-labels .axis-label:first-child { transform: none; }
+    .y-labels .axis-label:last-child { transform: translateY(-100%); }
+    #graph { position: relative; flex: 1; min-width: 0; height: clamp(320px, 48vh, 420px); border-left: 1px solid #000; border-bottom: 1px solid #000; cursor: crosshair; touch-action: manipulation; }
+    #dot { position: absolute; width: 8px; height: 8px; background: #000; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    .x-labels { display: flex; justify-content: space-between; gap: 8px; margin: 12px 0 0 144px; font-size: 13px; }
+    .x-title { margin: 18px 0 6px 144px; text-align: center; }
+    .x-description { margin: 0 0 12px 144px; text-align: center; }
+    #selection { margin: 24px 0 8px; font-size: 11px; min-height: 1.5em; }
+    label { display: block; margin: 0 0 8px; }
+    input[type="text"], textarea, select { width: 100%; max-width: 560px; padding: 6px; border: 1px solid #000; border-radius: 0; font: inherit; background: #fff; color: #000; }
+    textarea { resize: vertical; }
+    .field { margin-bottom: 24px; }
+    .optional { display: block; font-size: 12px; margin: 4px 0 8px; }
+    fieldset { border: 0; padding: 0; margin: 0 0 24px; min-width: 0; }
+    legend { padding: 0; margin-bottom: 6px; }
+    fieldset label { font-size: 14px; margin: 0; padding: 5px 0; }
+    fieldset input { margin: 0 8px 0 0; }
+    button { margin-top: 14px; padding: 4px 12px; font: inherit; }
+    #status { min-height: 1.5em; margin-top: 14px; font-size: 14px; }
+    details { margin: 18px 0; font-size: 13px; line-height: 1.5; }
+    summary { width: fit-content; cursor: pointer; text-decoration: underline; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    dt { margin-top: 14px; font-weight: bold; }
+    dd { margin: 4px 0 0; }
+    #framework { margin-top: 32px; line-height: 1.5; }
+    #framework figure { margin: 20px 0; }
+    #framework img { display: block; width: 100%; height: auto; }
+    figcaption { margin-top: 8px; font-size: 12px; }
+    .public-dot { position:absolute; width:8px; height:8px; padding:0; margin:0; border:0; border-radius:50%; background:#999; color:transparent; font-size:0; transform:translate(-50%,-50%); cursor:help; }
+    .public-dot.own { background:#000; z-index:2; }
+    .public-dot:focus-visible { outline:1px solid #000; outline-offset:3px; }
+    .axis-label { border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit; padding: 0; margin: 0; cursor: help; }
+    .axis-label:focus-visible { outline: 1px dotted #000; outline-offset: 3px; }
+    .grid-line { position: absolute; pointer-events: none; }
+    .grid-line.horizontal { left: 0; right: 0; border-top: 1px dotted rgba(0,0,0,.2); }
+    .grid-line.vertical { top: 0; bottom: 0; border-left: 1px dotted rgba(0,0,0,.2); }
+    .pointer-guide { position: absolute; pointer-events: none; z-index: 1; }
+    .pointer-guide.horizontal { left: 0; border-top: 1px dotted rgba(0,0,0,.35); }
+    .pointer-guide.vertical { bottom: 0; border-left: 1px dotted rgba(0,0,0,.35); }
+    .map-validation { position: absolute; left: 50%; bottom: 0; width: 1px !important; max-width: 1px; height: 1px; padding: 0 !important; border: 0 !important; opacity: 0; pointer-events: none; }
+    #axis-tooltip { position: fixed; z-index: 100; max-width: min(300px, calc(100vw - 24px)); border: 1px solid #000; padding: 10px; background: #fff; color: #000; font: 13px/1.5 Arial, sans-serif; pointer-events: none; }
+    #axis-tooltip strong { display: block; margin-bottom: 4px; }
+    .trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+    @media (max-width: 480px) {
+      body { margin: 20px auto; padding: 0 12px; }
+      h1 { font-size: 22px; }
+      .y-labels { width: 44px; font-size: 11px; }
+      .y-labels .axis-label { right: 10px; writing-mode: vertical-rl; text-orientation: mixed; transform: translateY(-50%) rotate(180deg); }
+      .y-labels .axis-label:first-child, .y-labels .axis-label:last-child { transform: translateY(-50%) rotate(180deg); }
+      .y-title, .y-description, .x-labels, .x-title, .x-description { margin-left: 44px; }
+      #graph { height: clamp(320px, 45svh, 380px); }
+      .x-labels { font-size: 11px; }
+    }
+  
+    .research-brand { display: block; width: 260px; max-width: 80%; margin: 0 0 28px; }
+    .research-brand img { display: block; width: 100%; height: auto; }
+    .studio-footer { margin: 48px 0 24px; }
+    .studio-footer img { display: block; width: 48px; max-width: 55%; height: auto; }
+    .premise { font-size:15px; line-height:1.5; margin:0 0 24px; max-width:620px; }
+    .instructions { margin-bottom:8px; }
+    .reciprocity { margin:0 0 28px; font-size:13px; line-height:1.5; }
+    #dot, .public-dot.own { width:10px; height:10px; }
+    .placement-guide { position:absolute; pointer-events:none; z-index:1; }
+    .placement-guide.horizontal { left:0; border-top:1px dashed rgba(0,0,0,.45); }
+    .placement-guide.vertical { bottom:0; border-left:1px dashed rgba(0,0,0,.45); }
+    .axis-label.nearest { font-weight:bold; text-decoration:underline; text-underline-offset:3px; }
+    #reference-message { line-height:1.6; font-size:14px; }
+    #reference-message strong { letter-spacing:.06em; font-size:16px; }
+    #share-survey { margin-top:28px; font-size:13px; }
+    #share-survey button { margin-top:0; }
+    #share-link-fallback { display:block; margin-top:8px; font-size:13px; }
+    #about p { white-space:pre-line; }
+    #submit { display:block; min-width:160px; min-height:48px; padding:12px 28px; border:1px solid #000; border-radius:0; background:#000; color:#fff; cursor:pointer; font:16px Arial,sans-serif; }
+    #submit:hover:not(:disabled) { background:#333; }
+    #submit:focus-visible { outline:2px solid #000; outline-offset:4px; }
+    #submit:disabled { background:#e5e5e5; color:#666; border-color:#aaa; cursor:not-allowed; }
+    #submit[aria-busy="true"] { background:#fff; color:#000; border-color:#000; cursor:wait; }
+    @media(max-width:600px) { #submit { width:100%; } .keyboard-instruction { display:none; } }
+    #dot, .public-dot { width:13px; height:13px; border:0; border-radius:0; background:transparent; color:#999; }
+    #dot, .public-dot.own { width:13px; height:13px; color:#000; background:transparent; }
+    #dot::before, #dot::after, .public-dot::before, .public-dot::after { content:""; position:absolute; background:currentColor; pointer-events:none; }
+    #dot::before, .public-dot::before { width:13px; height:3px; left:0; top:5px; }
+    #dot::after, .public-dot::after { width:3px; height:13px; left:5px; top:0; }
+    .survey-progress { margin:24px 0 20px; font-size:12px; color:#555; }
+    .survey-screen { margin-top:24px; }
+    .survey-screen h2 { font-size:20px; font-weight:normal; margin:0 0 20px; }
+    .intro-description { max-width:580px; font-size:15px; line-height:1.6; margin:0 0 16px; }
+    #intro-step .premise { margin-bottom:24px; }
+    #intro-step #about { max-width:680px; margin:24px 0; }
+    #intro-step .reciprocity { margin-bottom:24px; }
+    #map-step .instructions { margin-bottom:32px; }
+    #questions-step { max-width:640px; }
+    #questions-step .field { margin-bottom:28px; }
+    #questions-step input[type="text"], #questions-step textarea, #questions-step select { max-width:100%; padding:9px; }
+    #questions-step #selection { margin:0 0 24px; }
+    .step-actions { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:32px; }
+    .step-actions button { margin-top:0; }
+    .flow-primary { min-width:160px; min-height:48px; padding:12px 28px; border:1px solid #000; border-radius:0; background:#000; color:#fff; cursor:pointer; font:16px Arial,sans-serif; }
+    .flow-primary:hover:not(:disabled) { background:#333; }
+    .flow-primary:disabled { color:#666; background:#e5e5e5; border-color:#aaa; cursor:not-allowed; }
+    .flow-primary:focus-visible, .flow-back:focus-visible { outline:2px solid #000; outline-offset:4px; }
+    .flow-back { border:0; border-radius:0; padding:12px 0; min-height:48px; background:transparent; color:#000; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+    #results-map { margin-top:36px; }
+    #framework { border-top:1px solid #ccc; padding-top:24px; }
+    .survey-screen:focus, .survey-screen h2[tabindex="-1"]:focus { outline:none; }
+    @media(max-width:600px) { #map-panel .y-description { margin-bottom:52px; } .step-actions { flex-wrap:wrap; gap:12px; } .step-actions .flow-back { flex-basis:100%; text-align:left; } .flow-primary { width:100%; } }
+    #conversation { max-width:640px; border-top:1px solid #ccc; margin-top:36px; padding-top:24px; }
+    #conversation label { font-size:14px; line-height:1.6; }
+    #conversation-field { margin-top:16px; }
+    #conversation-contact { padding:9px; }
+    #conversation-status { font-size:14px; line-height:1.5; }
+    .flow-primary[aria-busy="true"] { background:#fff; color:#000; border-color:#000; cursor:wait; }
+    .experiment-title { display:block; width:60%; max-width:432px; height:auto; }
+    h1:has(.experiment-title) { margin-bottom:24px; }
+    #participation-count { margin:16px 0 0; font-size:12px; line-height:1.5; color:#555; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+    .x-labels .axis-label { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; text-align:center; }
+    .x-labels .axis-label:first-child { align-items:flex-start; text-align:left; }
+    .x-labels .axis-label:last-child { align-items:flex-end; text-align:right; }
+    .axis-anchor { display:block; max-width:150px; margin-top:7px; font-size:12px; line-height:1.45; font-weight:normal; text-decoration:none; }
+    .x-labels .axis-label.nearest { font-weight:normal; text-decoration:none; }
+    .x-labels .axis-label.nearest .axis-term { font-weight:bold; text-decoration:underline; text-underline-offset:3px; }
+    .x-anchors-mobile { display:none; }
+    @media(max-width:600px) { .axis-anchor { display:none; } .x-anchors-mobile { display:block; margin:18px 0 0 44px; font-size:12px; line-height:1.5; } .x-anchors-mobile p { margin:6px 0; } }
+      .required-mark { color:#b00020; font-weight:bold; }
+  
+    .graph-info { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; margin:0 0 0 5px; padding:0; vertical-align:middle; font:12px Arial,sans-serif; color:#000; background:transparent; border:1px solid #777; border-radius:50%; cursor:help; }
+    .graph-info:focus-visible { outline:2px solid #000; outline-offset:3px; }
+    .axis-anchor, .x-anchors-mobile { display:none!important; }
+    #map-panel .y-title, #map-panel .x-title { font-size:14px; font-weight:normal; }
+    #map-panel .y-title { margin-bottom:20px; }
+    #axis-tooltip { pointer-events:auto; padding-right:30px; background:#F4EFE8; }
+    #tooltip-close { position:absolute; top:3px; right:4px; padding:2px 5px; margin:0; border:0; background:transparent; font-size:18px; line-height:1; cursor:pointer; }
+    #placement-echo { margin-left:auto; font-size:13px; text-align:right; }
+    @media(max-width:600px) { #map-panel .y-title { margin-bottom:42px; } #placement-echo { flex-basis:100%; } }
+  </style>
+  <script src="/economicsofdoingthingsdifferently/config.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"></head>
+<body>
+  <main>
+    <a class="research-brand" href="/" aria-label="amongstudio research home"><img src="/assets/amongstudio-research.png" alt="amongstudio research" width="4014" height="452"></a>
+    <h1><img class="experiment-title" src="/assets/experiment-title.png" alt="@@COPY:c022@@" width="4087" height="828"></h1>
+    <p class="premise" id="intro-premise">@@COPY:c048@@</p>
+    <p id="survey-progress" class="survey-progress" aria-live="polite" hidden></p>
+    <section id="intro-step" class="survey-screen" tabindex="-1" aria-label="Introduction">
+      <p class="intro-description">@@COPY:c105@@</p>
+      <p class="reciprocity">@@COPY:c096@@</p>
+      <details id="about">
+        <summary>@@COPY:c047@@</summary>
+        <p id="graph-help">@@COPY:c049@@</p>
+        <p>@@COPY:c050@@</p>
+      </details>
+      <button id="start-survey" type="button" class="flow-primary">@@COPY:c101@@</button>
+      <p id="participation-count" hidden aria-live="polite"></p>
+      <details id="returning-participant"><summary>already submitted?</summary>
+        <form id="return-form"><label for="return-code">your reference code</label><input id="return-code" type="text" minlength="8" maxlength="8" pattern="[A-Fa-f0-9]{8}" required autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="return-help"><p class="note" id="return-help">return to the thank-you page and shared map. private answers are not shown. to see or delete your full response, contact jonas with your code.</p><button type="submit" id="return-submit">return to results</button><p id="return-status" role="status"></p></form>
+      </details>
+
+    </section>
+    <form id="response-form" novalidate>
+      <section id="map-step" class="survey-screen" hidden aria-labelledby="map-step-title">
+      <h2 id="map-step-title" tabindex="-1">@@COPY:c023@@ <span class="required-mark" aria-hidden="true">*</span><span class="sr-only"> (required)</span></h2>
+      <p class="instructions">@@COPY:c024@@ <button type="button" class="graph-info" data-definition="@@COPY:c039@@" data-clarification="" aria-label="what can count as work?" aria-controls="axis-tooltip" aria-expanded="false">i</button></p>
+      <div id="map-panel">
+      <p class="y-title" id="y-title"><span class="axis-question-text">@@COPY:c025@@</span> <button type="button" class="graph-info" id="y-info" data-definition="@@COPY:c028@@" data-clarification="" aria-label="what to include in livelihood support" aria-controls="axis-tooltip" aria-expanded="false">i</button></p>
+      <p class="axis-description y-description sr-only" id="y-description">@@COPY:c026@@<span class="y-context">@@COPY:c028@@</span></p>
+      <div class="plot-row">
+        <div class="y-labels">
+          <button type="button" class="axis-label" style="--pos:0%" data-definition="@@COPY:c027@@" data-clarification="" aria-label="@@COPY:c029@@: @@COPY:c027@@">@@COPY:c029@@</button>
+          <button type="button" class="axis-label" style="--pos:33.333%" data-definition="@@COPY:c030@@" data-clarification="" aria-label="@@COPY:c031@@: @@COPY:c030@@">@@COPY:c031@@</button>
+          <button type="button" class="axis-label" style="--pos:66.667%" data-definition="@@COPY:c032@@" data-clarification="" aria-label="@@COPY:c033@@: @@COPY:c032@@">@@COPY:c033@@</button>
+          <button type="button" class="axis-label" style="--pos:100%" data-definition="@@COPY:c034@@" data-clarification="" aria-label="@@COPY:c035@@: @@COPY:c034@@">@@COPY:c035@@</button>
+        </div>
+        <div id="graph" tabindex="0" role="group" aria-label="@@COPY:c036@@" aria-describedby="y-title x-title graph-keyboard-help selection"><span class="grid-line horizontal" style="top:33.333%" aria-hidden="true"></span><span class="grid-line horizontal" style="top:66.667%" aria-hidden="true"></span><span class="grid-line vertical" style="left:33.333%" aria-hidden="true"></span><span class="grid-line vertical" style="left:66.667%" aria-hidden="true"></span><span id="pointer-horizontal" class="pointer-guide horizontal" hidden aria-hidden="true"></span><span id="pointer-vertical" class="pointer-guide vertical" hidden aria-hidden="true"></span><span id="placement-horizontal" class="placement-guide horizontal" hidden aria-hidden="true"></span><span id="placement-vertical" class="placement-guide vertical" hidden aria-hidden="true"></span><span id="dot" hidden></span><input id="map-position" class="map-validation" type="text" required tabindex="-1" autocomplete="off" aria-label="@@COPY:c037@@"></div>
+      </div>
+      <div class="x-labels"><button type="button" class="axis-label" data-definition="@@COPY:c127@@" data-clarification="" aria-label="@@COPY:c040@@: @@COPY:c127@@"><span class="axis-term">@@COPY:c040@@</span><span class="axis-anchor">@@COPY:c127@@</span></button><button type="button" class="axis-label" data-definition="@@COPY:c128@@" data-clarification="" aria-label="@@COPY:c042@@: @@COPY:c128@@"><span class="axis-term">@@COPY:c042@@</span><span class="axis-anchor">@@COPY:c128@@</span></button><button type="button" class="axis-label" data-definition="@@COPY:c129@@" data-clarification="" aria-label="@@COPY:c044@@: @@COPY:c129@@"><span class="axis-term">@@COPY:c044@@</span><span class="axis-anchor">@@COPY:c129@@</span></button></div>
+      <div class="x-anchors-mobile" aria-label="x-axis anchors"><p><strong>@@COPY:c040@@:</strong> @@COPY:c127@@</p><p><strong>@@COPY:c042@@:</strong> @@COPY:c128@@</p><p><strong>@@COPY:c044@@:</strong> @@COPY:c129@@</p></div>
+      <p class="x-title" id="x-title"><span class="axis-question-text">@@COPY:c045@@</span> <button type="button" class="graph-info" id="x-info" data-definition="@@COPY:c046@@" data-clarification="" aria-label="what departure from existing systems means" aria-controls="axis-tooltip" aria-expanded="false">i</button></p>
+      <p class="axis-description x-description sr-only" id="x-description">@@COPY:c046@@</p>
+      </div>
+      <p id="graph-keyboard-help" class="sr-only">use the arrow keys to place or move your cross. the first arrow key starts at the centre. each press moves one point; hold shift to move ten. click or tap anywhere to move it.</p>
+      <p id="selection" class="sr-only" aria-live="polite">@@COPY:c016@@</p>
+      <div class="step-actions"><button id="map-back" type="button" class="flow-back">@@COPY:c103@@</button><span id="placement-echo" aria-hidden="true" hidden></span><button id="map-continue" type="button" class="flow-primary">@@COPY:c102@@</button></div>
+      </section>
+      <section id="questions-step" class="survey-screen" hidden aria-labelledby="questions-title">
+      <h2 id="questions-title" tabindex="-1">@@COPY:c107@@</h2>
+      <fieldset id="difference-dimensions-field" hidden disabled><legend>@@COPY:c123@@</legend><span class="optional">@@COPY:c124@@</span>
+        <label><input type="checkbox" name="difference_dimensions" value="what the work is for">@@COPY:c138@@</label>
+        <label><input type="checkbox" name="difference_dimensions" value="how it&#x27;s owned and decided">@@COPY:c139@@</label>
+        <label><input type="checkbox" name="difference_dimensions" value="how money and value flow">@@COPY:c140@@</label>
+        <label><input type="checkbox" name="difference_dimensions" value="relationships with people, land, time">@@COPY:c141@@</label>
+        <label><input type="checkbox" name="difference_dimensions" value="methods and practice">@@COPY:c142@@</label>
+        <label><input type="checkbox" name="difference_dimensions" value="it doesn&#x27;t differ much">@@COPY:c143@@</label>
+        <label id="dimension-other-label" hidden><input id="dimension-other-choice" type="checkbox" name="difference_dimensions" value="other" aria-controls="dimension-other-field" aria-expanded="false" disabled>@@COPY:c144@@</label>
+        <div id="dimension-other-field" hidden><label for="dimension-other">@@COPY:c145@@</label><span class="optional" id="dimension-other-help">@@COPY:c146@@</span><input id="dimension-other" type="text" maxlength="300" aria-describedby="dimension-other-help" disabled></div>
+      </fieldset>
+      <div class="field">
+        <label for="job">@@COPY:c051@@ <span class="required-mark" aria-hidden="true">*</span></label>
+        <input placeholder="@@COPY:c130@@" id="job" name="job" type="text" maxlength="160" required autocomplete="off">
+      </div>
+      <div class="field" id="situation-field" hidden><label for="situation">@@COPY:c125@@</label><select id="situation" name="situation" disabled><option value="">@@COPY:c126@@</option><option value="employed">@@COPY:c131@@</option><option value="self-employed or freelance">@@COPY:c132@@</option><option value="between work">@@COPY:c133@@</option><option value="studying">@@COPY:c134@@</option><option value="parental or care leave">@@COPY:c135@@</option><option value="retired">@@COPY:c136@@</option><option value="other">@@COPY:c137@@</option></select></div>
+      <div class="field">
+        <label for="difference-reason">@@COPY:c052@@</label>
+        <span class="optional" id="reason-optional">@@COPY:c053@@</span>
+        <textarea id="difference-reason" name="difference_reason" rows="2" maxlength="500" aria-describedby="reason-optional"></textarea>
+      </div>
+      <fieldset aria-describedby="support-help">
+        <legend>@@COPY:c054@@</legend>
+        <p class="note" id="support-help">@@COPY:c055@@</p>
+        <label><input type="checkbox" name="financial_support" value="income from this work">@@COPY:c056@@</label>
+        <label><input type="checkbox" name="financial_support" value="other work">@@COPY:c057@@</label>
+        <label><input type="checkbox" name="financial_support" value="savings">@@COPY:c058@@</label>
+        <label><input type="checkbox" name="financial_support" value="family">@@COPY:c059@@</label>
+        <label><input type="checkbox" name="financial_support" value="public support">@@COPY:c060@@</label>
+        <label><input type="checkbox" name="financial_support" value="collective resources">@@COPY:c061@@</label>
+        <label><input type="checkbox" name="financial_support" value="other" id="support-other-choice" aria-controls="support-other-field" aria-expanded="false">@@COPY:c062@@</label>
+        <div id="support-other-field" hidden style="margin-top:12px"><label for="support-other">@@COPY:c063@@</label><span class="optional" id="support-other-help">@@COPY:c064@@</span><input id="support-other" name="support_other" type="text" maxlength="300" aria-describedby="support-other-help"></div>
+      </fieldset>
+      <div class="field">
+        <label for="ends-meet">@@COPY:c065@@</label>
+        <span class="optional" id="ends-optional">@@COPY:c066@@</span>
+        <select id="ends-meet" name="ends_meet" aria-describedby="ends-optional">
+          <option value="">@@COPY:c067@@</option>
+          <option value="1">@@COPY:c068@@</option><option value="2">@@COPY:c069@@</option><option value="3">@@COPY:c070@@</option><option value="4">@@COPY:c071@@</option><option value="5">@@COPY:c072@@</option><option value="6">@@COPY:c073@@</option>
+        </select>
+      </div>
+      <div class="field" id="work-country-field" hidden>
+        <label for="work-country">@@COPY:c118@@</label>
+        <span class="optional" id="country-optional">@@COPY:c119@@</span>
+        <select id="work-country" name="work_country" aria-describedby="country-optional" disabled>
+          <option value="">@@COPY:c120@@</option>
+          <option value="MULTIPLE">@@COPY:c121@@</option>
+          <option value="PREFER_NOT_TO_SAY">@@COPY:c122@@</option>
+          <option value="AF">Afghanistan</option>
+          <option value="AX">Åland Islands</option>
+          <option value="AL">Albania</option>
+          <option value="DZ">Algeria</option>
+          <option value="AS">American Samoa</option>
+          <option value="AD">Andorra</option>
+          <option value="AO">Angola</option>
+          <option value="AI">Anguilla</option>
+          <option value="AQ">Antarctica</option>
+          <option value="AG">Antigua &amp; Barbuda</option>
+          <option value="AR">Argentina</option>
+          <option value="AM">Armenia</option>
+          <option value="AW">Aruba</option>
+          <option value="AU">Australia</option>
+          <option value="AT">Austria</option>
+          <option value="AZ">Azerbaijan</option>
+          <option value="BS">Bahamas</option>
+          <option value="BH">Bahrain</option>
+          <option value="BD">Bangladesh</option>
+          <option value="BB">Barbados</option>
+          <option value="BY">Belarus</option>
+          <option value="BE">Belgium</option>
+          <option value="BZ">Belize</option>
+          <option value="BJ">Benin</option>
+          <option value="BM">Bermuda</option>
+          <option value="BT">Bhutan</option>
+          <option value="BO">Bolivia</option>
+          <option value="BA">Bosnia &amp; Herzegovina</option>
+          <option value="BW">Botswana</option>
+          <option value="BV">Bouvet Island</option>
+          <option value="BR">Brazil</option>
+          <option value="IO">British Indian Ocean Territory</option>
+          <option value="VG">British Virgin Islands</option>
+          <option value="BN">Brunei</option>
+          <option value="BG">Bulgaria</option>
+          <option value="BF">Burkina Faso</option>
+          <option value="BI">Burundi</option>
+          <option value="KH">Cambodia</option>
+          <option value="CM">Cameroon</option>
+          <option value="CA">Canada</option>
+          <option value="CV">Cape Verde</option>
+          <option value="BQ">Caribbean Netherlands</option>
+          <option value="KY">Cayman Islands</option>
+          <option value="CF">Central African Republic</option>
+          <option value="TD">Chad</option>
+          <option value="CL">Chile</option>
+          <option value="CN">China</option>
+          <option value="CX">Christmas Island</option>
+          <option value="CC">Cocos (Keeling) Islands</option>
+          <option value="CO">Colombia</option>
+          <option value="KM">Comoros</option>
+          <option value="CG">Congo - Brazzaville</option>
+          <option value="CD">Congo - Kinshasa</option>
+          <option value="CK">Cook Islands</option>
+          <option value="CR">Costa Rica</option>
+          <option value="CI">Côte d’Ivoire</option>
+          <option value="HR">Croatia</option>
+          <option value="CU">Cuba</option>
+          <option value="CW">Curaçao</option>
+          <option value="CY">Cyprus</option>
+          <option value="CZ">Czechia</option>
+          <option value="DK">Denmark</option>
+          <option value="DJ">Djibouti</option>
+          <option value="DM">Dominica</option>
+          <option value="DO">Dominican Republic</option>
+          <option value="EC">Ecuador</option>
+          <option value="EG">Egypt</option>
+          <option value="SV">El Salvador</option>
+          <option value="GQ">Equatorial Guinea</option>
+          <option value="ER">Eritrea</option>
+          <option value="EE">Estonia</option>
+          <option value="SZ">Eswatini</option>
+          <option value="ET">Ethiopia</option>
+          <option value="FK">Falkland Islands</option>
+          <option value="FO">Faroe Islands</option>
+          <option value="FJ">Fiji</option>
+          <option value="FI">Finland</option>
+          <option value="FR">France</option>
+          <option value="GF">French Guiana</option>
+          <option value="PF">French Polynesia</option>
+          <option value="TF">French Southern Territories</option>
+          <option value="GA">Gabon</option>
+          <option value="GM">Gambia</option>
+          <option value="GE">Georgia</option>
+          <option value="DE">Germany</option>
+          <option value="GH">Ghana</option>
+          <option value="GI">Gibraltar</option>
+          <option value="GR">Greece</option>
+          <option value="GL">Greenland</option>
+          <option value="GD">Grenada</option>
+          <option value="GP">Guadeloupe</option>
+          <option value="GU">Guam</option>
+          <option value="GT">Guatemala</option>
+          <option value="GG">Guernsey</option>
+          <option value="GN">Guinea</option>
+          <option value="GW">Guinea-Bissau</option>
+          <option value="GY">Guyana</option>
+          <option value="HT">Haiti</option>
+          <option value="HM">Heard &amp; McDonald Islands</option>
+          <option value="HN">Honduras</option>
+          <option value="HK">Hong Kong SAR China</option>
+          <option value="HU">Hungary</option>
+          <option value="IS">Iceland</option>
+          <option value="IN">India</option>
+          <option value="ID">Indonesia</option>
+          <option value="IR">Iran</option>
+          <option value="IQ">Iraq</option>
+          <option value="IE">Ireland</option>
+          <option value="IM">Isle of Man</option>
+          <option value="IL">Israel</option>
+          <option value="IT">Italy</option>
+          <option value="JM">Jamaica</option>
+          <option value="JP">Japan</option>
+          <option value="JE">Jersey</option>
+          <option value="JO">Jordan</option>
+          <option value="KZ">Kazakhstan</option>
+          <option value="KE">Kenya</option>
+          <option value="KI">Kiribati</option>
+          <option value="KW">Kuwait</option>
+          <option value="KG">Kyrgyzstan</option>
+          <option value="LA">Laos</option>
+          <option value="LV">Latvia</option>
+          <option value="LB">Lebanon</option>
+          <option value="LS">Lesotho</option>
+          <option value="LR">Liberia</option>
+          <option value="LY">Libya</option>
+          <option value="LI">Liechtenstein</option>
+          <option value="LT">Lithuania</option>
+          <option value="LU">Luxembourg</option>
+          <option value="MO">Macao SAR China</option>
+          <option value="MG">Madagascar</option>
+          <option value="MW">Malawi</option>
+          <option value="MY">Malaysia</option>
+          <option value="MV">Maldives</option>
+          <option value="ML">Mali</option>
+          <option value="MT">Malta</option>
+          <option value="MH">Marshall Islands</option>
+          <option value="MQ">Martinique</option>
+          <option value="MR">Mauritania</option>
+          <option value="MU">Mauritius</option>
+          <option value="YT">Mayotte</option>
+          <option value="MX">Mexico</option>
+          <option value="FM">Micronesia</option>
+          <option value="MD">Moldova</option>
+          <option value="MC">Monaco</option>
+          <option value="MN">Mongolia</option>
+          <option value="ME">Montenegro</option>
+          <option value="MS">Montserrat</option>
+          <option value="MA">Morocco</option>
+          <option value="MZ">Mozambique</option>
+          <option value="MM">Myanmar (Burma)</option>
+          <option value="NA">Namibia</option>
+          <option value="NR">Nauru</option>
+          <option value="NP">Nepal</option>
+          <option value="NL">Netherlands</option>
+          <option value="NC">New Caledonia</option>
+          <option value="NZ">New Zealand</option>
+          <option value="NI">Nicaragua</option>
+          <option value="NE">Niger</option>
+          <option value="NG">Nigeria</option>
+          <option value="NU">Niue</option>
+          <option value="NF">Norfolk Island</option>
+          <option value="KP">North Korea</option>
+          <option value="MK">North Macedonia</option>
+          <option value="MP">Northern Mariana Islands</option>
+          <option value="NO">Norway</option>
+          <option value="OM">Oman</option>
+          <option value="PK">Pakistan</option>
+          <option value="PW">Palau</option>
+          <option value="PS">Palestinian Territories</option>
+          <option value="PA">Panama</option>
+          <option value="PG">Papua New Guinea</option>
+          <option value="PY">Paraguay</option>
+          <option value="PE">Peru</option>
+          <option value="PH">Philippines</option>
+          <option value="PN">Pitcairn Islands</option>
+          <option value="PL">Poland</option>
+          <option value="PT">Portugal</option>
+          <option value="PR">Puerto Rico</option>
+          <option value="QA">Qatar</option>
+          <option value="RE">Réunion</option>
+          <option value="RO">Romania</option>
+          <option value="RU">Russia</option>
+          <option value="RW">Rwanda</option>
+          <option value="WS">Samoa</option>
+          <option value="SM">San Marino</option>
+          <option value="ST">São Tomé &amp; Príncipe</option>
+          <option value="SA">Saudi Arabia</option>
+          <option value="SN">Senegal</option>
+          <option value="RS">Serbia</option>
+          <option value="SC">Seychelles</option>
+          <option value="SL">Sierra Leone</option>
+          <option value="SG">Singapore</option>
+          <option value="SX">Sint Maarten</option>
+          <option value="SK">Slovakia</option>
+          <option value="SI">Slovenia</option>
+          <option value="SB">Solomon Islands</option>
+          <option value="SO">Somalia</option>
+          <option value="ZA">South Africa</option>
+          <option value="GS">South Georgia &amp; South Sandwich Islands</option>
+          <option value="KR">South Korea</option>
+          <option value="SS">South Sudan</option>
+          <option value="ES">Spain</option>
+          <option value="LK">Sri Lanka</option>
+          <option value="BL">St. Barthélemy</option>
+          <option value="SH">St. Helena</option>
+          <option value="KN">St. Kitts &amp; Nevis</option>
+          <option value="LC">St. Lucia</option>
+          <option value="MF">St. Martin</option>
+          <option value="PM">St. Pierre &amp; Miquelon</option>
+          <option value="VC">St. Vincent &amp; Grenadines</option>
+          <option value="SD">Sudan</option>
+          <option value="SR">Suriname</option>
+          <option value="SJ">Svalbard &amp; Jan Mayen</option>
+          <option value="SE">Sweden</option>
+          <option value="CH">Switzerland</option>
+          <option value="SY">Syria</option>
+          <option value="TW">Taiwan</option>
+          <option value="TJ">Tajikistan</option>
+          <option value="TZ">Tanzania</option>
+          <option value="TH">Thailand</option>
+          <option value="TL">Timor-Leste</option>
+          <option value="TG">Togo</option>
+          <option value="TK">Tokelau</option>
+          <option value="TO">Tonga</option>
+          <option value="TT">Trinidad &amp; Tobago</option>
+          <option value="TN">Tunisia</option>
+          <option value="TR">Türkiye</option>
+          <option value="TM">Turkmenistan</option>
+          <option value="TC">Turks &amp; Caicos Islands</option>
+          <option value="TV">Tuvalu</option>
+          <option value="UM">U.S. Outlying Islands</option>
+          <option value="VI">U.S. Virgin Islands</option>
+          <option value="UG">Uganda</option>
+          <option value="UA">Ukraine</option>
+          <option value="AE">United Arab Emirates</option>
+          <option value="GB">United Kingdom</option>
+          <option value="US">United States</option>
+          <option value="UY">Uruguay</option>
+          <option value="UZ">Uzbekistan</option>
+          <option value="VU">Vanuatu</option>
+          <option value="VA">Vatican City</option>
+          <option value="VE">Venezuela</option>
+          <option value="VN">Vietnam</option>
+          <option value="WF">Wallis &amp; Futuna</option>
+          <option value="EH">Western Sahara</option>
+          <option value="YE">Yemen</option>
+          <option value="ZM">Zambia</option>
+          <option value="ZW">Zimbabwe</option>
+        </select>
+      </div>
+      <div class="trap" aria-hidden="true"><label for="website">@@COPY:c074@@</label><input id="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <fieldset id="sharing-choices">
+        <legend>@@COPY:c075@@</legend>
+        <label><input id="share-position" type="checkbox">@@COPY:c076@@</label>
+        <label><input id="share-job" type="checkbox" disabled>@@COPY:c077@@</label>
+        <p class="note">@@COPY:c078@@</p>
+      </fieldset>
+      <details id="privacy">
+        <summary>@@COPY:c079@@</summary>
+        <p>@@COPY:c080@@</p>
+        <p>@@COPY:c081@@</p>
+        <p>@@COPY:c082@@</p>
+        <p>@@COPY:c083@@</p>
+        <p>@@COPY:c084@@ <a href="mailto:jonas@amongstudio.net">@@COPY:c085@@</a>@@COPY:c086@@</p>
+      </details>
+      <div class="step-actions"><button id="questions-back" type="button" class="flow-back">@@COPY:c103@@</button><button id="submit" type="submit">@@COPY:c087@@</button></div>
+      <p id="status" role="status" aria-live="polite"></p>
+      </section>
+    </form>
+    <section id="results-step" class="survey-screen" hidden aria-labelledby="results-title">
+      <h2 id="results-title" tabindex="-1">@@COPY:c106@@</h2>
+    <section id="shared-view" hidden aria-label="@@COPY:c088@@">
+      <p id="reference-message" role="status" tabindex="-1" hidden></p>
+      <button id="show-map" type="button">@@COPY:c003@@</button>
+      <button id="withdraw-sharing" type="button" hidden>@@COPY:c089@@</button>
+      <p class="note" id="shared-help">@@COPY:c090@@</p>
+      <p id="shared-status" role="status"></p>
+    </section>
+    <div id="results-map" hidden></div>
+    <section id="conversation" aria-labelledby="conversation-title">
+      <h2 id="conversation-title">@@COPY:c109@@</h2>
+      <p class="note" id="conversation-help">@@COPY:c110@@</p>
+      <form id="conversation-form" aria-describedby="conversation-help">
+        <label><input id="conversation-consent" type="checkbox">@@COPY:c111@@</label>
+        <div id="conversation-field" hidden><label for="conversation-contact">@@COPY:c112@@</label><input id="conversation-contact" type="text" minlength="3" maxlength="254" required disabled autocomplete="off"></div>
+        <div class="trap" aria-hidden="true"><label for="conversation-website">@@COPY:c074@@</label><input id="conversation-website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button id="conversation-submit" type="submit" class="flow-primary" disabled>@@COPY:c113@@</button>
+      </form>
+      <p id="conversation-status" role="status" aria-live="polite"></p>
+    </section>
+    <section id="framework" hidden tabindex="-1" aria-labelledby="framework-title">
+      <h2 id="framework-title">@@COPY:c091@@</h2>
+      <p>@@COPY:c092@@</p>
+      <figure>
+        <a href="/economicsofdoingthingsdifferently/speculative-map.jpg" target="_blank" rel="noopener"><img id="framework-image" data-src="/economicsofdoingthingsdifferently/speculative-map.jpg" loading="lazy" decoding="async" alt="@@COPY:c093@@"></a>
+        <figcaption>@@COPY:c094@@</figcaption>
+      </figure>
+    </section>
+    <div id="share-survey"><button id="copy-survey-link" type="button">@@COPY:c098@@</button><p id="copy-link-status" role="status" aria-live="polite"></p><input id="share-link-fallback" type="text" readonly hidden aria-label="Survey link"></div>
+    </section>
+    <noscript>@@COPY:c095@@</noscript>
+  </main>
+  <footer class="studio-footer"><a href="https://amongstudio.net/"><img src="/assets/amongstudio-symbol.png" alt="amongstudio" width="642" height="427" loading="lazy"></a></footer>
+  <div id="axis-tooltip" role="dialog" aria-label="map help" hidden><button type="button" id="tooltip-close" aria-label="close help">×</button><strong id="tooltip-label"></strong><span id="tooltip-definition"></span></div>
+  <script>window.RESEARCH_CONTENT=@@CONTENT_JSON@@;</script>
+  <script>
+    window.initializeResearchSurvey = () => {
+      const pageContent = window.RESEARCH_CONTENT;
+      const copy = (key, fallback) => pageContent.texts[key] ?? fallback;
+      const sharePosition = document.getElementById('share-position');
+      const shareJob = document.getElementById('share-job');
+      sharePosition.addEventListener('change', () => { shareJob.disabled = !sharePosition.checked; if (!sharePosition.checked) shareJob.checked = false; });
+      const sharedView = document.getElementById('shared-view');
+      const sharedStatus = document.getElementById('shared-status');
+      const mapButton = document.getElementById('show-map');
+      const withdrawButton = document.getElementById('withdraw-sharing');
+      let receipt = null, mapMode = false, returningReference = null;
+      const graph = document.getElementById('graph');
+      const mapPosition = document.getElementById('map-position');
+      mapPosition.setCustomValidity(copy("c001","Please choose a position on the map."));
+      const otherChoice = document.getElementById('support-other-choice');
+      const otherField = document.getElementById('support-other-field');
+      const otherText = document.getElementById('support-other');
+      function syncOther() { otherField.hidden = !otherChoice.checked; otherChoice.setAttribute('aria-expanded', String(otherChoice.checked)); if (!otherChoice.checked) otherText.value = ''; }
+      otherChoice.addEventListener('change', syncOther);
+      syncOther();
+      const dot = document.getElementById('dot');
+      const placementHorizontal = document.getElementById('placement-horizontal');
+      const placementVertical = document.getElementById('placement-vertical');
+      const referenceMessage = document.getElementById('reference-message');
+      function showReference(code) {
+        if (!/^[A-F0-9]{8}$/.test(code || '')) return;
+        const message=copy('c097','your reference code: {code}. keep it somewhere safe. quote your reference code to see or delete your response.');
+        const parts=message.split('{code}'),strong=document.createElement('strong');strong.textContent=code;
+        referenceMessage.replaceChildren(document.createTextNode(parts[0]),strong,document.createTextNode(parts.slice(1).join('{code}')));
+        referenceMessage.hidden = false;
+      }
+      function clearPlacement() {
+        placementHorizontal.hidden = placementVertical.hidden = true;
+        document.querySelectorAll('.axis-label.nearest').forEach(label=>label.classList.remove('nearest'));
+      }
+      function showPlacement(x,y) {
+        placementHorizontal.style.top=(100-y)+'%';placementHorizontal.style.width=x+'%';
+        placementVertical.style.left=x+'%';placementVertical.style.top=(100-y)+'%';
+        placementHorizontal.hidden=placementVertical.hidden=false;
+        const nearest=(values,value)=>values.reduce((best,current,index)=>Math.abs(current-value)<Math.abs(values[best]-value)?index:best,0);
+        const xIndex=nearest([0,50,100],x),yIndex=nearest([100,66.667,33.333,0],y);
+        document.querySelectorAll('.x-labels .axis-label').forEach((label,index)=>label.classList.toggle('nearest',index===xIndex));
+        document.querySelectorAll('.y-labels .axis-label').forEach((label,index)=>label.classList.toggle('nearest',index===yIndex));
+      }
+      document.getElementById('copy-survey-link').addEventListener('click', async()=>{
+        const link='https://research.amongstudio.net/economicsofdoingthingsdifferently';
+        const message=document.getElementById('copy-link-status'),fallback=document.getElementById('share-link-fallback');
+        try { await navigator.clipboard.writeText(link); fallback.hidden=true;message.textContent=copy('c099','link copied — send it to a colleague or friend.'); }
+        catch(_) { message.textContent=copy('c100','copy this link to send to a colleague or friend:');fallback.value=link;fallback.hidden=false;fallback.focus();fallback.select(); }
+      });
+      const horizontalGuide = document.getElementById('pointer-horizontal');
+      const verticalGuide = document.getElementById('pointer-vertical');
+      function hidePointerGuides() { horizontalGuide.hidden = true; verticalGuide.hidden = true; }
+      graph.addEventListener('pointermove', event => {
+        if (busy || event.pointerType === 'touch') { hidePointerGuides(); return; }
+        const bounds = graph.getBoundingClientRect();
+        const x = Math.max(0, Math.min(100, (event.clientX - bounds.left - graph.clientLeft) / graph.clientWidth * 100));
+        const y = Math.max(0, Math.min(100, (event.clientY - bounds.top - graph.clientTop) / graph.clientHeight * 100));
+        horizontalGuide.style.top = y + '%'; horizontalGuide.style.width = x + '%';
+        verticalGuide.style.left = x + '%'; verticalGuide.style.top = y + '%';
+        horizontalGuide.hidden = false; verticalGuide.hidden = false;
+      });
+      graph.addEventListener('pointerleave', hidePointerGuides);
+      graph.addEventListener('pointercancel', hidePointerGuides);
+
+      const form = document.getElementById('response-form');
+      const job = document.getElementById('job');
+      const reason = document.getElementById('difference-reason');
+      const ends = document.getElementById('ends-meet');
+      const dimensionOtherChoice=document.getElementById('dimension-other-choice'),dimensionOtherText=document.getElementById('dimension-other');
+      document.getElementById('dimension-other-label').hidden=!pageContent.has_difference_other;
+      dimensionOtherChoice.disabled=!pageContent.has_difference_other;
+      function syncDimensionOther(){const open=Boolean(pageContent.has_difference_other&&dimensionOtherChoice.checked);document.getElementById('dimension-other-field').hidden=!open;dimensionOtherText.disabled=!open;dimensionOtherChoice.setAttribute('aria-expanded',String(open));if(!open)dimensionOtherText.value='';}
+      dimensionOtherChoice.addEventListener('change',syncDimensionOther);syncDimensionOther();
+      const situation=document.getElementById('situation'), dimensionField=document.getElementById('difference-dimensions-field');
+      document.getElementById('situation-field').hidden=!pageContent.has_extended_questions;
+      situation.disabled=!pageContent.has_extended_questions;
+      dimensionField.hidden=!pageContent.has_extended_questions;dimensionField.disabled=!pageContent.has_extended_questions;
+      const workCountry=document.getElementById('work-country');
+      document.getElementById('work-country-field').hidden=!pageContent.has_work_country;
+      workCountry.disabled=!pageContent.has_work_country;
+      const button = document.getElementById('submit');
+      const status = document.getElementById('status');
+      const selection = document.getElementById('selection');
+      const framework = document.getElementById('framework');
+      const frameworkImage = document.getElementById('framework-image');
+      const participationCount=document.getElementById('participation-count');
+      let countLoading=false;
+      async function refreshParticipationCount() {
+        if(countLoading || currentStep!==0 || document.hidden)return;
+        countLoading=true;
+        try {
+          const response=await window.researchFetch('/economicsofdoingthingsdifferently/api/count',{cache:'no-store',signal:AbortSignal.timeout(10000)});
+          if(!response.ok)throw new Error('Count unavailable.');
+          const data=await response.json();
+          if(!data || !Number.isSafeInteger(data.count) || data.count<0)throw new Error('Invalid count.');
+          const template=data.count===1 ? copy('c116','{count} placement on the map so far.') : copy('c117','{count} placements on the map so far.');
+          const text=template.replace('{count}',new Intl.NumberFormat('en').format(data.count));
+          if(participationCount.textContent!==text)participationCount.textContent=text;
+          participationCount.hidden=false;
+        }catch(_){participationCount.hidden=true;}
+        finally{countLoading=false;}
+      }
+      setInterval(refreshParticipationCount,15000);
+      document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshParticipationCount();});
+      const screens=[document.getElementById('intro-step'),document.getElementById('map-step'),document.getElementById('questions-step'),document.getElementById('results-step')];
+      const progress=document.getElementById('survey-progress'),mapPanel=document.getElementById('map-panel'),resultsMap=document.getElementById('results-map');
+      let currentStep=0;
+      function showStep(step,focus=true) {
+        currentStep=step;
+        document.getElementById('intro-premise').hidden=step!==0;
+        screens.forEach((screen,index)=>screen.hidden=index!==step);
+        progress.hidden=step===3;
+        if(step<3)progress.textContent=copy('c104','{step} of 3').replace('{step}',step+1);
+        hideTooltip();hidePointerGuides();
+        if(step===0)refreshParticipationCount();
+        if(focus){const target=step===0?screens[0]:document.getElementById(step===1?'map-step-title':step===2?'questions-title':'results-title');target.focus({preventScroll:true});window.scrollTo({top:0,behavior:'auto'});}
+      }
+      function continueFromMap() {
+        if(busy)return;
+        if(!point){graph.focus();mapPosition.reportValidity();return;}
+        showStep(2);
+      }
+      document.getElementById('start-survey').addEventListener('click',()=>showStep(1));
+      document.getElementById('map-back').addEventListener('click',()=>showStep(0));
+      document.getElementById('map-continue').addEventListener('click',continueFromMap);
+      document.getElementById('questions-back').addEventListener('click',()=>{if(!busy)showStep(1);});
+      const config = window.EXPERIMENT_CONFIG || {};
+      let point = null, busy = false, lastSaved = 0;
+      try { lastSaved = Number(localStorage.getItem('experiment-last-saved')) || 0; } catch (_) {}
+      const configured = /^https:\/\/[^/]+$/.test(config.supabaseUrl || '') && /^sb_publishable_[A-Za-z0-9_-]+$/.test(config.supabasePublishableKey || '');
+      if (!configured) { button.disabled = true; status.textContent = copy("c002","Submissions are not open yet. Supabase setup is required."); }
+      const conversationForm=document.getElementById('conversation-form'),conversationConsent=document.getElementById('conversation-consent'),conversationContact=document.getElementById('conversation-contact'),conversationButton=document.getElementById('conversation-submit'),conversationStatus=document.getElementById('conversation-status');
+      let conversationBusy=false;
+      conversationConsent.addEventListener('change',()=>{
+        document.getElementById('conversation-field').hidden=!conversationConsent.checked;
+        conversationContact.disabled=!conversationConsent.checked;
+        conversationButton.disabled=!conversationConsent.checked;
+        if(!conversationConsent.checked)conversationContact.value='';
+      });
+      conversationForm.addEventListener('submit',async event=>{
+        event.preventDefault();if(conversationBusy || !conversationConsent.checked || !configured)return;
+        if(!conversationContact.value.trim()){conversationContact.setCustomValidity(copy('c112','email or another way to reach you'));conversationContact.reportValidity();return;}
+        conversationBusy=true;conversationButton.disabled=true;conversationConsent.disabled=true;conversationContact.disabled=true;
+        conversationButton.setAttribute('aria-busy','true');conversationButton.textContent=copy('c013','Saving…');conversationStatus.textContent='';
+        try {
+          const response=await fetch(config.supabaseUrl+'/rest/v1/rpc/submit_conversation_contact',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.supabasePublishableKey},body:JSON.stringify({p_contact:conversationContact.value.trim(),p_consent:true,p_notice_version:pageContent.version,p_website:document.getElementById('conversation-website').value}),signal:AbortSignal.timeout(15000)});
+          if(!response.ok || await response.json()!==true)throw new Error('Contact save failed.');
+          conversationForm.reset();conversationForm.hidden=true;conversationStatus.textContent=copy('c114','thank you. your contact details have been saved separately. this does not change your survey response.');
+        }catch(_){conversationStatus.textContent=copy('c115','could not save your contact details. your survey response is already saved. please try again.');}
+        finally{conversationBusy=false;conversationConsent.disabled=false;conversationContact.disabled=!conversationConsent.checked;conversationButton.disabled=!conversationConsent.checked;conversationButton.removeAttribute('aria-busy');conversationButton.textContent=copy('c113','save contact details');}
+      });
+      conversationContact.addEventListener('input',()=>conversationContact.setCustomValidity(''));
+
+      function describePlacement(x,y) {
+        const differenceLabels=Array.from(document.querySelectorAll('.x-labels .axis-term'),node=>node.textContent);
+        const livelihoodLabels=Array.from(document.querySelectorAll('.y-labels .axis-label'),node=>node.textContent).reverse();
+        const nearestDifference=[0,50,100].reduce((best,value,index,values)=>Math.abs(value-x)<Math.abs(values[best]-x)?index:best,0);
+        const difference='towards '+differenceLabels[nearestDifference];
+        const nearestLivelihood=Math.round(y/(100/3));
+        const band=Math.min(2,Math.floor(y/(100/3)));
+        const livelihood=Math.abs(y-nearestLivelihood*(100/3))<=.01 ? livelihoodLabels[nearestLivelihood] : 'between '+livelihoodLabels[band]+' and '+livelihoodLabels[band+1];
+        const template=copy('selection_template','{difference}, {livelihood}.');
+        const wordsTemplate=template.includes('{difference}') && template.includes('{livelihood}') ? template : '{difference}, {livelihood}.';
+        return wordsTemplate.replace('{difference}',difference).replace('{livelihood}',livelihood);
+      }
+      function place(x, y) {
+        point = {x: Math.round(Math.max(0, Math.min(100, x)) * 100) / 100, y: Math.round(Math.max(0, Math.min(100, y)) * 100) / 100};
+        mapPosition.value = point.x + ',' + point.y; mapPosition.setCustomValidity('');
+        showPlacement(point.x,point.y);
+        dot.hidden = false; dot.style.left = point.x + '%'; dot.style.top = (100 - point.y) + '%';
+        selection.textContent = describePlacement(point.x,point.y);
+        const echo=document.getElementById('placement-echo');
+        const xIndex=[0,50,100].reduce((best,v,i,a)=>Math.abs(v-point.x)<Math.abs(a[best]-point.x)?i:best,0),yIndex=[100,66.667,33.333,0].reduce((best,v,i,a)=>Math.abs(v-point.y)<Math.abs(a[best]-point.y)?i:best,0);
+        echo.textContent=document.querySelectorAll('.x-labels .axis-term')[xIndex].textContent+', '+document.querySelectorAll('.y-labels .axis-label')[yIndex].textContent;echo.hidden=false;
+        if (configured) status.textContent = '';
+      }
+      graph.addEventListener('click', event => {
+        if (busy || mapMode) return;
+        const bounds = graph.getBoundingClientRect();
+        place((event.clientX - bounds.left - graph.clientLeft) / graph.clientWidth * 100, 100 - (event.clientY - bounds.top - graph.clientTop) / graph.clientHeight * 100);
+      });
+      graph.addEventListener('keydown', event => {
+        if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+        event.preventDefault(); if (busy || mapMode) return;
+        if (!point) { place(50, 50); return; }
+        const step = event.shiftKey ? 10 : 1;
+        place(point.x + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0), point.y + (event.key === 'ArrowUp' ? step : event.key === 'ArrowDown' ? -step : 0));
+      });
+      const tooltip = document.getElementById('axis-tooltip');
+      const tooltipLabel = document.getElementById('tooltip-label');
+      const tooltipDefinition = document.getElementById('tooltip-definition');
+      let tooltipTarget=null,tooltipPinned=false,suppressTooltipFocus=false;
+      function hideTooltip(restore=false) {
+        const previous=tooltipTarget;if(previous){previous.removeAttribute('aria-describedby');previous.setAttribute('aria-expanded','false');}
+        tooltipTarget=null;tooltipPinned=false;tooltip.hidden=true;
+        if(restore&&previous){suppressTooltipFocus=true;previous.focus();suppressTooltipFocus=false;}
+      }
+      function positionTooltip(x,y) {
+        const box=tooltip.getBoundingClientRect();tooltip.style.left=Math.max(12,Math.min(x+14,window.innerWidth-box.width-12))+'px';tooltip.style.top=Math.max(12,y+14+box.height<=window.innerHeight-12?y+14:y-box.height-14)+'px';
+      }
+      function showTooltip(label,event,pin=false) {
+        hideTooltip();tooltipTarget=label;tooltipPinned=pin;
+        tooltipLabel.textContent=label.classList.contains('graph-info')?'':label.querySelector('.axis-term')?.textContent||label.textContent;
+        tooltipDefinition.textContent=label.dataset.definition+' '+(label.dataset.clarification||'');
+        tooltip.setAttribute('aria-label',label.getAttribute('aria-label')||'placement help');label.setAttribute('aria-describedby','tooltip-definition');label.setAttribute('aria-expanded','true');tooltip.hidden=false;
+        const bounds=label.getBoundingClientRect();positionTooltip(event&&event.pointerType!=='touch'?event.clientX:bounds.left,event&&event.pointerType!=='touch'?event.clientY:bounds.bottom);
+      }
+      function bindTooltip(label) {
+        label.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!tooltipPinned)showTooltip(label,event);});
+        label.addEventListener('pointermove',event=>{if(tooltipTarget===label&&!tooltipPinned&&event.pointerType!=='touch')positionTooltip(event.clientX,event.clientY);});
+        label.addEventListener('pointerleave',event=>{if(!tooltipPinned&&document.activeElement!==label&&!tooltip.contains(event.relatedTarget))hideTooltip();});
+        label.addEventListener('focus',()=>{if(!suppressTooltipFocus)showTooltip(label);});
+        label.addEventListener('click',()=>{if(tooltipTarget===label&&tooltipPinned)hideTooltip();else showTooltip(label,null,true);});
+      }
+      document.querySelectorAll('.axis-label,.graph-info').forEach(bindTooltip);
+      document.getElementById('tooltip-close').addEventListener('click',()=>hideTooltip(true));
+      document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!tooltip.hidden){event.preventDefault();hideTooltip(tooltip.contains(document.activeElement));}});
+      document.addEventListener('pointerdown',event=>{if(!tooltip.hidden&&!tooltip.contains(event.target)&&!tooltipTarget?.contains(event.target))hideTooltip();});
+      document.addEventListener('focusin',event=>{if(tooltipTarget&&!tooltip.contains(event.target)&&event.target!==tooltipTarget)hideTooltip();});
+      window.addEventListener('scroll',()=>hideTooltip(),true);window.addEventListener('resize',()=>hideTooltip());
+      async function returnLookup(code) {
+        const response=await fetch(config.supabaseUrl+'/rest/v1/rpc/return_to_research_results',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.supabasePublishableKey},body:JSON.stringify({p_reference:code}),signal:AbortSignal.timeout(12000)});
+        if(!response.ok)throw new Error('could not load results. please try again.');
+        const result=await response.json();
+        if(result?.error==='rate_limit')throw new Error('too many attempts. please try again in a minute.');
+        if(!result || result.error || !Array.isArray(result.positions))throw new Error('this code was not found, or the response is no longer available.');
+        return result;
+      }
+      function syncMobileAnchors() {
+        const mobile=document.querySelector('.x-anchors-mobile');
+        mobile.replaceChildren(...Array.from(document.querySelectorAll('.x-labels .axis-label'),label=>{
+          const line=document.createElement('p'),term=document.createElement('strong'),anchor=label.querySelector('.axis-anchor');
+          term.textContent=label.querySelector('.axis-term').textContent+': ';line.append(term,document.createTextNode(anchor.textContent));line.hidden=anchor.hidden;return line;
+        }));
+      }
+      syncMobileAnchors();
+      function applyReturningScale(content) {
+        if(!content?.texts)return false;
+        const t=content.texts;
+        for(const [id,key] of [['y-title','c025'],['x-title','c045'],['x-description','c046']]){const node=document.getElementById(id);(node.querySelector('.axis-question-text')||node).textContent=t[key];}
+        document.getElementById('y-info').dataset.definition=t.c028;document.getElementById('x-info').dataset.definition=t.c046;
+        const description=document.getElementById('y-description');description.replaceChildren(document.createTextNode(t.c026));const context=document.createElement('span');context.className='y-context';context.textContent=t.c028;description.appendChild(context);
+        const updateLabel=(node,label,definition,clarification)=>{const term=node.querySelector('.axis-term');if(term)term.textContent=t[label];else node.textContent=t[label];node.dataset.definition=t[definition];node.dataset.clarification=clarification ? t[clarification] : '';node.setAttribute('aria-label',t[label]+': '+t[definition]);};
+        document.querySelectorAll('.y-labels .axis-label').forEach((node,i)=>updateLabel(node,['c029','c031','c033','c035'][i],['c027','c030','c032','c034'][i]));
+        document.querySelectorAll('.x-labels .axis-label').forEach((node,i)=>updateLabel(node,['c040','c042','c044'][i],(t.c040==='as things are'?['c127','c128','c129']:['c038','c041','c043'])[i],t.c040==='as things are'?null:'c039'));
+        document.querySelectorAll('.axis-anchor').forEach((node,i)=>{node.hidden=!t['c'+(127+i)];if(!node.hidden)node.textContent=t['c'+(127+i)];});
+        syncMobileAnchors();
+        document.querySelector('.x-anchors-mobile').hidden=!t.c127;
+        return true;
+      }
+      document.getElementById('return-form').addEventListener('submit',async event=>{
+        event.preventDefault();const input=document.getElementById('return-code'),message=document.getElementById('return-status'),control=document.getElementById('return-submit');
+        if(!event.currentTarget.reportValidity())return;
+        control.disabled=true;control.textContent='loading…';message.textContent='';
+        try {
+          const code=input.value.trim().toUpperCase(),result=await returnLookup(code);
+          returningReference=code;receipt=null;showReference(code);sharedView.hidden=false;withdrawButton.hidden=true;
+          const compatible=applyReturningScale(result.content);mapButton.hidden=!compatible;
+          document.getElementById('shared-help').textContent='only consenting positions and separately permitted work or situation descriptions are shown. your shared cross is black; other crosses are grey. private answers remain private.';
+          sharedStatus.textContent=compatible ? 'responses collected with '+result.version+'. if you did not consent to sharing your cross, it is not shown here.' : 'this response used an earlier map. contact jonas with your code to request your response.';
+          frameworkImage.src=frameworkImage.dataset.src;framework.hidden=false;showStep(3);
+        }catch(error){message.textContent=error.message;}
+        finally{control.disabled=false;control.textContent='return to results';}
+      });
+      async function sharingCall(name) {
+        if(returningReference && name==='get_consented_positions')return (await returnLookup(returningReference)).positions;
+        if(returningReference)throw new Error('contact jonas with your reference code to change your response.');
+        const response = await fetch(config.supabaseUrl + '/rest/v1/rpc/' + name, {method:'POST',headers:{'Content-Type':'application/json',apikey:config.supabasePublishableKey},body:JSON.stringify({p_receipt:receipt}),signal:AbortSignal.timeout(12000)});
+        if (!response.ok) throw new Error(copy("c005","Could not load the shared map. Try again."));
+        return response.json();
+      }
+      function clearSharedMap() {
+        graph.querySelectorAll('.public-dot').forEach(mark => mark.remove());
+        hideTooltip(); mapMode = false; resultsMap.hidden=true; graph.setAttribute('aria-describedby','y-title y-description x-title x-description graph-help selection'); graph.setAttribute('aria-label',copy('c036','Place your work on the graph'));
+        mapButton.textContent = copy("c003","see where others placed their work");
+      }
+      mapButton.addEventListener('click', async () => {
+        if (mapMode) { clearSharedMap(); return; }
+        mapButton.disabled = true; sharedStatus.textContent = copy("c004","Loading shared positions\u2026");
+        try {
+          const data = await sharingCall('get_consented_positions');
+          if (!Array.isArray(data) || !data.every(row => row && Number.isFinite(row.x) && row.x>=0 && row.x<=100 && Number.isFinite(row.y) && row.y>=0 && row.y<=100 && typeof row.own==='boolean' && (row.job===null || typeof row.job==='string'))) throw new Error(copy("c005","Could not load the shared map. Try again."));
+          clearSharedMap(); mapMode = true; dot.hidden = true; clearPlacement();
+          resultsMap.appendChild(mapPanel);resultsMap.hidden=false;graph.setAttribute('aria-describedby','shared-help shared-status');graph.setAttribute('aria-label',copy('c108','shared positions. your response is black.'));
+          for (const row of data) {
+            const mark = document.createElement('button');
+            mark.type = 'button'; mark.className = 'public-dot' + (row.own ? ' own' : '');
+            mark.style.left = row.x + '%'; mark.style.top = (100-row.y) + '%';
+            mark.textContent = row.own ? copy("c006","your response") : row.job || copy("c007","job title not shared");
+            mark.dataset.definition = (row.own && row.job ? row.job + '. ' : '') + describePlacement(row.x,row.y);
+            mark.dataset.clarification = '';
+            mark.setAttribute('aria-label',mark.textContent + '. ' + mark.dataset.definition);
+            bindTooltip(mark); graph.appendChild(mark);
+          }
+          mapButton.textContent = copy("c008","hide shared map");
+          sharedStatus.textContent = copy('shared_count','{count} other consenting responses. Your point is black.').replace('{count}', data.filter(row=>!row.own).length);
+          graph.scrollIntoView({block:'center',behavior:'auto'});
+        } catch (error) { sharedStatus.textContent = error.message; }
+        finally { mapButton.disabled = false; }
+      });
+      withdrawButton.addEventListener('click', async () => {
+        withdrawButton.disabled = true;
+        try {
+          const result = await sharingCall('withdraw_map_sharing');
+          if (result !== true) throw new Error(copy("c009","Could not change sharing. Try again."));
+          withdrawButton.hidden = true; clearSharedMap(); sharedStatus.textContent = copy("c010","Your response is no longer shared. Copies previously made by viewers cannot be recalled.");
+        } catch(error) { sharedStatus.textContent = error.message; }
+        finally { withdrawButton.disabled = false; }
+      });
+      showStep(0,false);
+      try {
+        const previousReceipt = JSON.parse(sessionStorage.getItem('research-map-receipt') || 'null');
+        if (previousReceipt && previousReceipt.version === pageContent.version && /^[a-f0-9]{64}$/.test(previousReceipt.receipt)) { receipt = previousReceipt.receipt; showReference(previousReceipt.reference_code); sharedView.hidden = false; withdrawButton.hidden = false; frameworkImage.src=frameworkImage.dataset.src;framework.hidden=false;showStep(3,false); }
+      } catch (_) {}
+      form.addEventListener('submit', async event => {
+        event.preventDefault(); if (busy) return;
+        if(currentStep===1){continueFromMap();return;}
+        if(currentStep!==2 || !configured)return;
+        if(!point){showStep(1);graph.focus();mapPosition.reportValidity();return;}
+        if(!form.reportValidity())return;
+        if (!point) { mapPosition.reportValidity(); return; }
+        if (mapMode) clearSharedMap();
+        const description = job.value.trim();
+        if (!description) { status.textContent = copy("c011","Enter your current job or position."); job.focus(); return; }
+        if (Date.now() - lastSaved < 30000) { status.textContent = copy("c012","Please wait 30 seconds between submissions."); return; }
+        const support = Array.from(form.querySelectorAll('input[name="financial_support"]:checked'), input => input.value);
+        const payload = {p_x: point.x, p_y: point.y, p_job: description, p_questionnaire_version: pageContent.version, p_difference_reason: reason.value.trim() || null, p_financial_support: support.length ? support : null, p_ends_meet: ends.value === '' ? null : Number(ends.value), p_website: document.getElementById('website').value, p_support_other: otherChoice.checked ? otherText.value.trim() || null : null, p_share_position: sharePosition.checked, p_share_job: shareJob.checked};
+        if(pageContent.has_extended_questions){payload.p_situation=situation.value || null;const dimensions=Array.from(form.querySelectorAll('[name="difference_dimensions"]:checked'),el=>el.value);payload.p_difference_dimensions=dimensions.length ? dimensions : null;}
+        if(pageContent.has_difference_other)payload.p_difference_dimensions_other=dimensionOtherChoice.checked ? dimensionOtherText.value.trim()||null : null;
+        if(pageContent.has_work_country)payload.p_work_country=workCountry.value || null;
+        const controls = Array.from(form.querySelectorAll('input, textarea, select, button'));
+        busy = true; button.setAttribute('aria-busy','true'); button.textContent=copy('c013','Saving…'); hidePointerGuides(); controls.forEach(control => control.disabled = true); status.textContent = copy("c013","Saving\u2026");
+        const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 15000);
+        try {
+          const response = await fetch(config.supabaseUrl + '/rest/v1/rpc/' + (pageContent.has_difference_other ? 'submit_response_v6' : pageContent.has_extended_questions ? 'submit_response_v5' : pageContent.has_work_country ? 'submit_response_v4' : 'submit_response_v3'), {method: 'POST', headers: {'Content-Type':'application/json', apikey:config.supabasePublishableKey}, body:JSON.stringify(payload), signal:controller.signal});
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            if (error.message === 'Too many submissions. Please try again in a minute.') throw new Error(error.message);
+            throw new Error(copy("c014","Could not save. Please try again or let the researcher know."));
+          }
+          const saved = await response.json();
+          if (!saved || typeof saved.receipt !== 'string' || !/^[a-f0-9]{64}$/.test(saved.receipt) || !/^[A-F0-9]{8}$/.test(saved.reference_code || '')) throw new Error(copy("c015","Could not confirm the save. Check with the researcher before retrying."));
+          returningReference=null; receipt = saved.receipt; showReference(saved.reference_code);
+          try { sessionStorage.setItem('research-map-receipt', JSON.stringify({receipt,version:pageContent.version,reference_code:saved.reference_code})); } catch (_) {}
+          sharedView.hidden = false; withdrawButton.hidden = !sharePosition.checked;
+          lastSaved = Date.now(); try { localStorage.setItem('experiment-last-saved', String(lastSaved)); } catch (_) {}
+          form.reset(); syncOther(); syncDimensionOther(); shareJob.disabled = true; mapPosition.value = ''; mapPosition.setCustomValidity(copy("c001","Please choose a position on the map.")); point = null; dot.hidden = true; clearPlacement(); selection.textContent = copy("c016","no position selected."); document.getElementById('placement-echo').hidden=true; status.textContent = copy("c017","Saved. Thank you.");
+          frameworkImage.src = frameworkImage.dataset.src; framework.hidden = false; showStep(3);
+        } catch (error) {
+          status.textContent = error.name === 'AbortError' || error instanceof TypeError ? copy("c018","Connection interrupted. Your response may have saved; check with the researcher before retrying.") : error.message;
+        } finally { clearTimeout(timeout); busy = false; button.removeAttribute('aria-busy'); button.textContent=copy('c087','submit'); controls.forEach(control => control.disabled = false); shareJob.disabled = !sharePosition.checked; workCountry.disabled=!pageContent.has_work_country; situation.disabled=!pageContent.has_extended_questions; dimensionField.disabled=!pageContent.has_extended_questions; dimensionOtherChoice.disabled=!pageContent.has_difference_other; syncDimensionOther(); }
+      });
+    };
+  </script>
+</body>
+</html>
